@@ -1,0 +1,88 @@
+@media screen and (max-width: 1024px) {
+  body {
+    display: block;
+  }
+
+  header {
+    width: 100%;
+
+    .hamburger-menu {
+      display: block;
+    }
+
+    h1 {
+      font-size: 24px;
+
+      svg {
+        vertical-align: -25%;
+      }
+    }
+  }
+
+  .main-wrapper {
+    width: 100%;
+  }
+
+  .form-ranking  {
+    display: block;
+
+    .content+.content {
+      margin-top: 32px;
+    }
+  }
+
+  nav.side-nav {
+    transition: all 0.5s;
+    transform: translate(-100%, 0);
+
+    &.show {
+      transform: translate(0, 0);
+    }
+
+    .flex-content svg {
+      display: block;
+    }
+  }
+
+  /* ランキングのタブレット対応 */
+  .ranking {
+    .ranking-top-contents {
+      gap: 8px;
+
+      .ranking-content {
+        &:nth-child(1) {
+          flex: 0 1 160px;
+        }
+
+        &:nth-child(2) {
+          flex: 0 1 200px;
+        }
+
+        &:nth-child(3) {
+          flex: 0 1 140px;
+        }
+      }
+    }
+
+    .ranking-bottom-contents {
+      .ranking-content {
+        padding: 12px 16px;
+
+        .rank-num {
+          width: 32px;
+          height: 32px;
+          font-size: 14px;
+        }
+
+        .user-info .user-id {
+          font-size: 14px;
+        }
+
+        .point {
+          font-size: 18px;
+          min-width: 100px;
+        }
+      }
+    }
+  }
+}

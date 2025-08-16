@@ -1,0 +1,308 @@
+/* QRスキャナー用スタイル */
+#qr-scanner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.scanner-container {
+    background: var(--bg-primary);
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 90%;
+    max-height: 90%;
+    width: 420px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.scanner-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.scanner-header h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.close-scanner-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px 8px;
+    line-height: 1;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.close-scanner-btn:hover {
+    color: var(--primary-red);
+    background: var(--bg-tertiary);
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+#qr-video {
+    width: 100%;
+    height: auto;
+    display: block;
+    min-height: 250px;
+    object-fit: cover;
+}
+
+.scan-frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    margin: -100px 0 0 -100px;
+    border: 2px solid #00ff88;
+    border-radius: 12px;
+    pointer-events: none;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 255, 136, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 136, 0);
+    }
+}
+
+.scan-frame::before,
+.scan-frame::after,
+.scan-frame {
+    border-style: solid;
+}
+
+.scan-frame::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    width: 25px;
+    height: 25px;
+    border: 4px solid #00ff88;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 8px 0 0 0;
+}
+
+.scan-frame::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    width: 25px;
+    height: 25px;
+    border: 4px solid #00ff88;
+    border-left: none;
+    border-top: none;
+    border-radius: 0 0 8px 0;
+}
+
+/* 追加の角マーカー */
+.scan-frame {
+    --corner-size: 25px;
+    --corner-thickness: 4px;
+}
+
+.scan-frame::before {
+    box-shadow: 
+        calc(var(--corner-size) + 172px) 0 0 0 #00ff88,
+        calc(var(--corner-size) + 172px) var(--corner-thickness) 0 0 #00ff88,
+        calc(var(--corner-size) + 176px) 0 0 0 #00ff88,
+        calc(var(--corner-size) + 176px) var(--corner-thickness) 0 0 #00ff88;
+}
+
+.scan-instruction {
+    text-align: center;
+    color: var(--text-secondary);
+    margin: 0 0 12px 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.scan-status {
+    text-align: center;
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    min-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .scanner-container {
+        width: 95%;
+        padding: 20px 16px;
+        margin: 16px;
+    }
+
+    .scanner-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .video-container {
+        max-width: 280px;
+    }
+
+    .scan-frame {
+        width: 160px;
+        height: 160px;
+        margin: -80px 0 0 -80px;
+    }
+
+    .scan-frame::before {
+        width: 20px;
+        height: 20px;
+    }
+
+    .scan-frame::after {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .scanner-container {
+        width: 98%;
+        padding: 16px 12px;
+        margin: 8px;
+    }
+
+    .video-container {
+        max-width: 240px;
+    }
+
+    .scan-frame {
+        width: 120px;
+        height: 120px;
+        margin: -60px 0 0 -60px;
+    }
+
+    .scan-instruction {
+        font-size: 0.9rem;
+    }
+
+    .scan-status {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+    }
+}
+
+/* ダークモード対応 */
+body.dark-mode #qr-scanner-overlay {
+    background: rgba(0, 0, 0, 0.95);
+}
+
+body.dark-mode .scanner-container {
+    background: var(--bg-primary);
+    border-color: var(--border-color);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode .scan-status {
+    background: var(--bg-tertiary);
+    border-color: var(--border-light);
+}
+
+/* メッセージエリアのスタイル */
+#message-area {
+    margin-top: 16px;
+}
+
+.error-message {
+    color: var(--error-text);
+    background: var(--error-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 0;
+    font-size: 14px;
+    border: 1px solid #f87171;
+}
+
+.success-message {
+    color: var(--success-text);
+    background: var(--success-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    border: 1px solid #10b981;
+}
+
+.info-message {
+    color: var(--info-text);
+    background: var(--info-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 0;
+    font-size: 14px;
+    border: 1px solid #3b82f6;
+}
+
+.error-message p,
+.success-message p,
+.info-message p {
+    margin: 0;
+}
+
+/* 残高表示のスタイル */
+#current-balance {
+    font-weight: bold;
+    color: var(--primary-green);
+    font-size: 1.2em;
+}

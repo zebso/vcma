@@ -1,0 +1,62 @@
+/* 設定ページ専用スタイル */
+.theme-setting {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 24px;
+  margin: 20px 0;
+  box-shadow: var(--shadow-lg);
+}
+
+.theme-setting h2 {
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.theme-options {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.theme-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 140px;
+}
+
+.theme-options label:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-blue);
+}
+
+.theme-options input[type="radio"] {
+  margin: 0;
+  accent-color: var(--primary-blue);
+}
+
+.theme-options input[type="radio"]:checked + span {
+  color: var(--primary-blue);
+  font-weight: 600;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .theme-options {
+    flex-direction: column;
+  }
+  
+  .theme-options label {
+    min-width: auto;
+  }
+}

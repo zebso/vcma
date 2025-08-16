@@ -1,0 +1,78 @@
+/* ライトモード専用スタイル */
+:root {
+  --primary-blue: #087de2;
+  --primary-green: #059669;
+  --primary-red: #ef4444;
+  --primary-yellow: #fbbf24;
+  --primary-purple: #7c3aed;
+
+  --success-bg: #cbfdeb;
+  --success-text: #278a73;
+  --info-bg: #dbeafe;
+  --info-text: #1e40af;
+  --error-bg: #fee2e2;
+  --error-text: #b34d4d;
+
+  --text-primary: #1f2937;
+  --text-secondary: #78768e;
+  --text-muted: #94a3b8;
+
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f3f3f3;
+  --border-color: #eae9e9;
+  --border-light: #e8e6e5;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 1px 4px 4px #f1f3f5;
+}
+
+/* ライトモード固有のスタイル */
+body {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+header {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.side-nav {
+  background-color: var(--bg-primary);
+  border-right: 1px solid var(--border-color);
+}
+
+.side-nav ul li.current-page {
+  background: #f0f6ff;
+}
+
+.side-nav ul li.current-page a {
+  color: var(--primary-blue);
+}
+
+.side-nav ul li.current-page a svg {
+  fill: var(--primary-blue);
+}
+
+.hamburger-menu {
+  fill: var(--text-primary);
+}
+
+/* 設定ページ - ライトモード */
+.theme-setting {
+  background: var(--bg-primary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.theme-options label {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.theme-options label:hover {
+  background: var(--bg-tertiary);
+}

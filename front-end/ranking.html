@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add_circle,currency_exchange,dehaze,finance,history,library_add,qr_code,qr_code_scanner,remove,request_quote,settings,supervisor_account,sync_alt,wallet" />
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/tablet.css">
+  <link rel="stylesheet" href="css/mobile.css">
+  <title>文化祭 カジノ通貨管理アプリ</title>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      fetch('svg/svg.html') //ロード元URL
+        .then(data => data.text())
+        .then(html => document.getElementById('svg').innerHTML = html)
+        .then();
+    });
+  </script>
+</head>
+
+<body>
+  <!--SVGアイコンを読み込むための空のdiv-->
+  <div id="svg" style="display: none;"></div>
+
+  <div class="main-wrapper">
+    <header>
+      <!--ハンバーガーメニュー-->
+      <svg class="hamburger-menu" width="36" height="36">
+        <use href="#dehaze" />
+      </svg>
+
+      <h1><svg width="36" height="36" style="fill: goldenrod;">
+          <use href="#crown" />
+        </svg>ランキング</h1>
+    </header>
+
+    <main>
+
+      <div class="ranking">
+
+        <div class="ranking-top-contents">
+          <div class="ranking-content">
+            <p class="user-id">CC-2025-K9O00S</p>
+            <h3 class="point">$15,500</h3>
+          </div>
+          <div class="ranking-content">
+            <p class="user-id">CC-2025-K9O00A</p>
+            <h3 class="point">$18,750</h3>
+          </div>
+          <div class="ranking-content">
+            <p class="user-id">CC-2025-K9O00T</p>
+            <h3 class="point">$12,300</h3>
+          </div>
+        </div>
+
+        <div class="ranking-bottom-contents">
+          <div class="ranking-content">
+            <div class="rank-section">
+              <div class="rank-num">4</div>
+              <div class="user-info">
+                <div class="user-id">CC-2025-K9O00B</div>
+                <div class="user-name">Player B</div>
+              </div>
+            </div>
+            <div class="point">$10,800</div>
+          </div>
+          <div class="ranking-content">
+            <div class="rank-section">
+              <div class="rank-num">5</div>
+              <div class="user-info">
+                <div class="user-id">CC-2025-K9O00C</div>
+                <div class="user-name">Player C</div>
+              </div>
+            </div>
+            <div class="point">$9,200</div>
+          </div>
+          <div class="ranking-content">
+            <div class="rank-section">
+              <div class="rank-num">6</div>
+              <div class="user-info">
+                <div class="user-id">CC-2025-K9O00D</div>
+                <div class="user-name">Player D</div>
+              </div>
+            </div>
+            <div class="point">$7,600</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <nav class="side-nav">
+    <div class="flex-content">
+      <svg width="48" height="48">
+        <use href="#close" />
+      </svg>
+      <div class="logos">
+        <svg width="24" height="24" style="fill: #087de2;">
+          <use href="#currency-exchange" />
+        </svg>
+        <div class="contents-right">
+          <h4>通貨システム</h4>
+          <p>管理アプリ</p>
+        </div>
+      </div>
+    </div>
+    <ul>
+      <li><a href="dashboard.html"><svg width="24" height="24">
+            <use href="#finance" />
+          </svg>一覧</a></li>
+      <li><a href="balance-checker.html"><svg width="24" height="24">
+            <use href="#request-quote" />
+          </svg>残高確認</a></li>
+      <li><a href="balance-updater.html"><svg width="24" height="24">
+            <use href="#wallet" />
+          </svg>残高更新</a></li>
+      <li><a href="transaction-history.html"><svg width="24" height="24">
+            <use href="#history" />
+          </svg>取引履歴</a></li>
+      <li class="current-page"><a href="ranking.html"><svg width="24" height="24">
+            <use href="#crown" />
+          </svg>ランキング</a></li>
+      <li><a href="settings.html"><svg width="24" height="24">
+            <use href="#settings" />
+          </svg>設定</a></li>
+    </ul>
+  </nav>
+
+  <div id="close-nav"></div>
+
+  <script src="js/slideIn.js"></script>
+  <script src="js/theme.js"></script>
+</body>
+
+</html>

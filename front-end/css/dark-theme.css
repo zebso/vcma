@@ -1,0 +1,168 @@
+/* ダークモード専用スタイル */
+:root {
+  --primary-blue: #4a9eff;
+  --primary-green: #10b981;
+  --primary-red: #f87171;
+  --primary-yellow: #fcd34d;
+  --primary-purple: #8b5cf6;
+
+  --success-bg: #064e3b;
+  --success-text: #34d399;
+  --info-bg: #1e3a8a;
+  --info-text: #60a5fa;
+  --error-bg: #7f1d1d;
+  --error-text: #f87171;
+
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --text-muted: #888888;
+
+  --bg-primary: #2d2d2d;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #3a3a3a;
+  --border-color: #444444;
+  --border-light: #555555;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ダークモード固有のスタイル */
+body {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+header {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+header h1 {
+  color: var(--text-primary);
+}
+
+.side-nav {
+  background-color: var(--bg-primary);
+  border-right: 1px solid var(--border-color);
+}
+
+.side-nav h4,
+.side-nav p {
+  color: var(--text-primary);
+}
+
+.side-nav ul li a {
+  color: var(--text-muted);
+}
+
+.side-nav ul li a:hover {
+  color: var(--text-primary);
+}
+
+.side-nav ul li a:hover svg {
+  fill: var(--text-primary);
+}
+
+.side-nav ul li.current-page {
+  background: rgba(74, 158, 255, 0.2);
+}
+
+.side-nav ul li.current-page a {
+  color: var(--primary-blue);
+}
+
+.side-nav ul li.current-page a svg {
+  fill: var(--primary-blue);
+}
+
+.hamburger-menu,
+.side-nav .flex-content svg {
+  fill: var(--text-primary);
+}
+
+/* コンテンツエリア */
+.content {
+  background: var(--bg-primary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* フォーム要素 */
+input {
+  background: var(--bg-primary);
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}
+
+input:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.2);
+}
+
+/* テーブル */
+table {
+  background: var(--bg-primary);
+}
+
+table thead {
+  background: var(--bg-tertiary);
+}
+
+table tbody tr {
+  border-top: 1px solid var(--border-color);
+}
+
+table tbody tr:hover {
+  background: var(--bg-tertiary);
+}
+
+table tbody tr td {
+  color: var(--text-primary);
+}
+
+/* タブ */
+.tab {
+  border-color: var(--border-color);
+  background: var(--bg-primary);
+}
+
+.tab .tab-controller button {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+
+.tab .tab-controller button.current-tab {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.scan-qr-btn,
+.check-balance-btn {
+  color: var(--text-primary);
+}
+
+/* 設定ページ - ダークモード */
+.theme-setting {
+  background: var(--bg-primary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-lg);
+}
+
+.theme-setting h2 {
+  color: var(--text-primary);
+}
+
+.theme-options label {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.theme-options label:hover {
+  background: #4a4a4a;
+  border-color: var(--primary-blue);
+}

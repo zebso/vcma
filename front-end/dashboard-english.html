@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add_circle,currency_exchange,finance,history,library_add,qr_code,remove,request_quote,settings,supervisor_account,sync_alt,wallet" />
+  <link rel="stylesheet" href="style.css">
+  <title>文化祭 カジノ通貨管理アプリ</title>
+</head>
+
+<body>
+
+  <div class="main-wrapper">
+    <header>
+      <h1>Casino Currency Management</h1>
+      <div class="logos">
+        <span class="material-symbols-outlined">currency_exchange</span>
+        <div class="contents-right">
+          <h4>Casino Currency</h4>
+          <p>Admin Panel</p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+
+      <!--情報欄-->
+      <div class="informations">
+
+        <div>
+          <div class="content flex-content" id="active-ids">
+            <span class="material-symbols-outlined ft-48">supervisor_account</span>
+            <div class="contents-right">
+              <p>Active IDs</p>
+              <h2>1</h2>
+            </div>
+          </div>
+
+          <div class="content flex-content" id="total-balance">
+            <span class="material-symbols-outlined ft-48">request_quote</span>
+            <div class="contents-right">
+              <p>Total Balance</p>
+              <h2>￥9,500</h2>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="content flex-content" id="todays-transactions">
+            <span class="material-symbols-outlined ft-48">sync_alt</span>
+            <div class="contents-right">
+              <p>Today's Transactions</p>
+              <h2>2</h2>
+            </div>
+          </div>
+
+          <div class="content flex-content" id="qr-generated">
+            <span class="material-symbols-outlined ft-48">qr_code</span>
+            <div class="contents-right">
+              <p>QR Generated</p>
+              <h2>1</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--入力欄-->
+      <div class="forms">
+
+        <!--ID生成フォーム-->
+        <div class="content">
+          <h3><span class="material-symbols-outlined" id="add-circle">add_circle</span>Generate New ID</h3>
+          <label for="initial-balance">Initial Balance</label>
+          <div class="input-before">
+            <span>$</span>
+            <input type="number" id="initial-balance" value="100" placeholder="0">
+          </div>
+          <button class="btn" id="generate-btn"><span class="material-symbols-outlined">library_add</span>Generate ID &
+            QR
+            code</button>
+        </div>
+
+        <!--残高更新フォーム-->
+        <div class="content">
+          <h3><span class="material-symbols-outlined" id="wallet">wallet</span>Balance Management</h3>
+          <label for="id-search">ID Search</label>
+          <input type="search" id="id-search" placeholder="Enter ID to search">
+          <label for="amount">Amount</label>
+          <div class="input-before">
+            <span>$</span>
+            <input type="number" id="amount" min="0" placeholder="0">
+          </div>
+          <div class="flex-content">
+            <button class="btn" id="add-btn">+ Add</button>
+            <button class="btn" id="subtract-btn">- Subtract</button>
+          </div>
+        </div>
+      </div>
+
+      <!--ID＆QRコード-->
+      <div class="content flex-content id-qr">
+        <div class="contents-left">
+          <h3><span class="material-symbols-outlined" id="qr-code">qr_code</span>Generated ID & QR Code</h3>
+          <label>Generated ID</label>
+          <h3>CC-2025-OL11IP</h3>
+          <label>Initial Balance</label>
+          <h3 id="generated-balance">$ 100</h3>
+        </div>
+        <div class="contents-right">
+          <div>
+            <img src="" width="280" height="280">
+          </div>
+        </div>
+      </div>
+
+      <!--履歴-->
+      <div class="content history">
+        <h3><span class="material-symbols-outlined">history</span>Recent Transactions</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>TIMESTAMP</th>
+                <th>ID</th>
+                <th>TYPE</th>
+                <th>AMOUNT</th>
+                <th>BALANCE</th>
+                <th>ADMIN</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2025/7/19 21:20:34</td>
+                <td>CC-2025-OL11IP</td>
+                <td><span class="generate"><span class="material-symbols-outlined ft-16"
+                      id="add-circle">add_circle</span>Generate</span></td>
+                <td>$100</td>
+                <td>$100</td>
+                <td>Admin</td>
+              </tr>
+              <tr>
+                <td>2025/7/18 15:06:36</td>
+                <td>CC-2025-K9O00R</td>
+                <td><span class="subtract"><span class="material-symbols-outlined ft-16">remove</span>Subtract</span>
+                </td>
+                <td class="minus">$-500</td>
+                <td>$9,500</td>
+                <td>Admin</td>
+              </tr>
+              <tr>
+                <td>2025/7/18 15:04:58</td>
+                <td>CC-2025-K9O00R</td>
+                <td><span class="generate"><span class="material-symbols-outlined ft-16"
+                      id="add-circle">add_circle</span>Generate</span></td>
+                <td>$10,000</td>
+                <td>$10,000</td>
+                <td>Admin</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <nav class="side-nav">
+    <div class="logos">
+      <span class="material-symbols-outlined">currency_exchange</span>
+      <div class="contents-right">
+        <h4>Casino Currency</h4>
+        <p>Admin Panel</p>
+      </div>
+    </div>
+    <ul>
+      <li class="current-page"><a href="#"><span class="material-symbols-outlined">finance</span>Dashboard</a></li>
+      <li><a href="#"><span class="material-symbols-outlined">qr_code</span>ID Management</a></li>
+      <li><a href="#"><span class="material-symbols-outlined">wallet</span>Balance Control</a></li>
+      <li><a href="#"><span class="material-symbols-outlined">history</span>Transaction History</a></li>
+      <li><a href="#"><span class="material-symbols-outlined">settings</span>Settings</a></li>
+    </ul>
+  </nav>
+
+  <nav class="side-bar">
+    <span class="material-symbols-outlined ft-48">currency_exchange</span>
+    <ul>
+      <li class="current-page"><a href="#"><span><span
+              class="material-symbols-outlined ft-48">finance</span><br>Dashboard</span></a></li>
+      <li><a href="#"><span><span class="material-symbols-outlined ft-48">qr_code</span><br>ID Management</span></a>
+      </li>
+      <li><a href="#"><span><span class="material-symbols-outlined ft-48">wallet</span><br>Balance Control</span></a>
+      </li>
+      <li><a href="#"><span><span class="material-symbols-outlined ft-48">history</span><br>Transaction
+            History</span></a></li>
+      <li><a href="#"><span><span class="material-symbols-outlined ft-48">settings</span><br>Settings</span></a></li>
+    </ul>
+  </nav>
+
+  <nav class="button-nav">
+    <a href="#" class="current-page"><span><span class="material-symbols-outlined ft-48">finance</span><br>Dashboard</span></a>
+    <a href="#"><span><span class="material-symbols-outlined ft-48">qr_code</span><br>ID Management</span></a>
+    <a href="#"><span><span class="material-symbols-outlined ft-48">wallet</span><br>Balance Control</span></a>
+    <a href="#"><span><span class="material-symbols-outlined ft-48">history</span><br>Transaction History</span></a>
+    <a href="#"><span><span class="material-symbols-outlined ft-48">settings</span><br>Settings</span></a>
+  </nav>
+  
+  <script src="js/theme.js"></script>
+</body>
+
+</html>

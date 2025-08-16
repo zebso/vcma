@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add_circle,currency_exchange,dehaze,finance,history,library_add,qr_code,qr_code_scanner,remove,request_quote,settings,supervisor_account,sync_alt,wallet" />
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/tablet.css">
+  <link rel="stylesheet" href="css/mobile.css">
+  <link rel="stylesheet" href="css/transaction-history.css">
+  <title>文化祭 カジノ通貨管理アプリ</title>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      fetch('svg/svg.html') //ロード元URL
+        .then(data => data.text())
+        .then(html => document.getElementById('svg').innerHTML = html)
+        .then();
+    });
+  </script>
+</head>
+
+<body>
+  <!--SVGアイコンを読み込むための空のdiv-->
+  <div id="svg" style="display: none;"></div>
+
+  <div class="main-wrapper">
+    <header>
+      <!--ハンバーガーメニュー-->
+      <svg class="hamburger-menu" width="36" height="36">
+        <use href="#dehaze" />
+      </svg>
+
+      <h1><svg width="36" height="36" style="fill: #d97706;">
+          <use href="#history" />
+        </svg>取引履歴</h1>
+    </header>
+
+    <main>
+
+      <!--履歴-->
+      <div class="history content">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>日時</th>
+                <th>ID</th>
+                <th>ゲーム</th>
+                <th>タイプ</th>
+                <th>額</th>
+                <th>残高</th>
+                <th>ディーラー</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2025/7/19 21:20:34</td>
+                <td>CC-2025-K9O00R</td>
+                <td>ブラックジャック</td>
+                <td><span class="add">＋ 入金</span></td>
+                <td>$100</td>
+                <td>$9,600</td>
+                <td>ディーラーA</td>
+              </tr>
+              <tr>
+                <td>2025/7/18 15:06:36</td>
+                <td>CC-2025-K9O00R</td>
+                <td>ブラックジャック</td>
+                <td><span class="subtract">ー 出金</span>
+                </td>
+                <td class="minus">$-500</td>
+                <td>$9,500</td>
+                <td>ディーラーB</td>
+              </tr>
+              <tr>
+                <td>2025/7/18 15:04:58</td>
+                <td>CC-2025-K9O00R</td>
+                <td>ルーレット</td>
+                <td><span class="generate">＋ 生成</span></td>
+                <td>$10,000</td>
+                <td>$10,000</td>
+                <td>ディーラーC</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <nav class="side-nav">
+    <div class="flex-content">
+      <svg width="48" height="48">
+        <use href="#close" />
+      </svg>
+      <div class="logos">
+        <svg width="24" height="24" style="fill: #087de2;">
+          <use href="#currency-exchange" />
+        </svg>
+        <div class="contents-right">
+          <h4>通貨システム</h4>
+          <p>管理アプリ</p>
+        </div>
+      </div>
+    </div>
+    <ul>
+      <li><a href="dashboard.html"><svg width="24" height="24">
+            <use href="#finance" />
+          </svg>一覧</a></li>
+      <li><a href="balance-checker.html"><svg width="24" height="24">
+            <use href="#request-quote" />
+          </svg>残高確認</a></li>
+      <li><a href="balance-updater.html"><svg width="24" height="24">
+            <use href="#wallet" />
+          </svg>残高更新</a></li>
+      <li class="current-page"><a href="transaction-history.html"><svg width="24" height="24">
+            <use href="#history" />
+          </svg>取引履歴</a></li>
+      <li><a href="ranking.html"><svg width="24" height="24">
+            <use href="#crown" />
+          </svg>ランキング</a></li>
+      <li><a href="settings.html"><svg width="24" height="24">
+            <use href="#settings" />
+          </svg>設定</a></li>
+    </ul>
+  </nav>
+
+  <div id="close-nav"></div>
+
+  <script src="js/slideIn.js"></script>
+  <script src="js/theme.js"></script>
+</body>
+
+</html>
