@@ -1,4 +1,4 @@
-// QRコードスキャナー機能（実装版）
+// QRコードスキャナー機能
 class QRScanner {
     constructor() {
         this.video = null;
@@ -39,18 +39,18 @@ class QRScanner {
     async startScan() {
         try {
             this.showMessage('QRライブラリを読み込んでいます...', 'info');
-            
+
             // jsQRライブラリを読み込み
             await this.loadJsQR();
-            
+
             this.showMessage('カメラを起動しています...', 'info');
-            
+
             // カメラ映像表示用の要素を作成
             this.createVideoElement();
-            
+
             // カメラストリームを取得
             this.stream = await navigator.mediaDevices.getUserMedia({
-                video: { 
+                video: {
                     facingMode: 'environment', // 背面カメラを優先
                     width: { ideal: 1280 },
                     height: { ideal: 720 }
@@ -59,11 +59,11 @@ class QRScanner {
 
             this.video.srcObject = this.stream;
             this.video.play();
-            
+
             this.scanning = true;
             this.showScannerUI();
             this.hideMessage();
-            
+
             // QRコード検出を開始
             this.video.addEventListener('loadedmetadata', () => {
                 this.startQRDetection();
@@ -94,13 +94,13 @@ class QRScanner {
                 <div class="scan-status" id="scan-status">スキャンしています...</div>
             </div>
         `;
-        
+
         document.body.appendChild(overlay);
-        
+
         // 新しく作成されたvideo要素を取得し直す
         this.video = overlay.querySelector('video');
         this.video.srcObject = this.stream;
-        
+
         // 閉じるボタンのイベント
         overlay.querySelector('.close-scanner-btn').addEventListener('click', () => {
             this.stopScan();
@@ -132,7 +132,7 @@ class QRScanner {
         this.video.playsInline = true;
 
         this.canvas = document.createElement('canvas');
-        this.context = this.canvas.getContext('2d');
+        this.context = this.canvas.getContext('2d', { willReadFrequently: true });
     }
 
     // QRコード検出を開始
@@ -184,17 +184,16 @@ class QRScanner {
 
     // QRコード検出成功時の処理
     onQRCodeDetected(qrData) {
-        console.log('QRコード検出:', qrData);
-        
+
         this.updateScanStatus('QRコードを検出しました！');
-        
+
         // スキャン停止
         setTimeout(() => {
             this.stopScan();
-            
+
             // 成功メッセージを表示
             this.showSuccessMessage(qrData);
-            
+
             // 残高確認APIを呼び出し
             this.checkBalance(qrData);
         }, 500);
@@ -203,7 +202,7 @@ class QRScanner {
     // スキャン停止
     stopScan() {
         this.scanning = false;
-        
+
         // スキャン間隔をクリア
         if (this.scanInterval) {
             clearInterval(this.scanInterval);
@@ -230,10 +229,10 @@ class QRScanner {
         }
 
         if (this.messageArea) {
-            const messageClass = type === 'error' ? 'error-message' : 
-                                type === 'success' ? 'success-message' : 
-                                'info-message';
-            
+            const messageClass = type === 'error' ? 'error-message' :
+                type === 'success' ? 'success-message' :
+                    'info-message';
+
             this.messageArea.innerHTML = `
                 <div class="${messageClass}">
                     <p>${message}</p>
@@ -259,18 +258,13 @@ class QRScanner {
         this.showMessage(message, 'error');
     }
 
-    // 残高確認（実装版）
+    // 残高確認
     async checkBalance(userId) {
         try {
-            // APIエンドポイント（実際のAPIに置き換えてください）
+            // APIエンドポイント
             const apiUrl = `/api/balance/${encodeURIComponent(userId)}`;
-            
-            const response = await fetch(apiUrl, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
+
+            const response = await fetch(apiUrl);
 
             if (response.ok) {
                 const data = await response.json();
@@ -282,8 +276,6 @@ class QRScanner {
             }
         } catch (error) {
             console.error('API呼び出しエラー:', error);
-            // 開発用：ダミーデータを表示
-            this.displayDummyBalance(userId);
         }
     }
 
@@ -295,7 +287,7 @@ class QRScanner {
             let currentValue = 0;
             const targetValue = parseFloat(balance);
             const increment = targetValue / 30;
-            
+
             const timer = setInterval(() => {
                 currentValue += increment;
                 if (currentValue >= targetValue) {
@@ -306,46 +298,27 @@ class QRScanner {
             }, 30);
         }
     }
-
-    // 開発用ダミー残高表示
-    displayDummyBalance(userId) {
-        console.log('開発モード: ダミー残高を表示');
-        
-        // ダミーの残高データ（ユーザーIDに基づく）
-        let dummyBalance;
-        if (userId.toUpperCase().includes('ADMIN')) {
-            dummyBalance = Math.floor(Math.random() * 50000) + 10000;
-        } else if (userId.toUpperCase().includes('GUEST')) {
-            dummyBalance = Math.floor(Math.random() * 1000) + 100;
-        } else {
-            dummyBalance = Math.floor(Math.random() * 10000) + 1000;
-        }
-        
-        setTimeout(() => {
-            this.displayBalance(dummyBalance);
-        }, 500);
-    }
 }
 
 // QRスキャナーインスタンスを作成
 const qrScanner = new QRScanner();
 
 // DOMContentLoaded後に初期化
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     const scanButton = document.querySelector('.scan-qr-btn');
     const idSearchButton = document.querySelector('.check-balance-btn');
-    const idSearchInput = document.getElementById('id-search');
-    
+    const idSearchInput = document.querySelector('#id-search');
+
     // QRスキャンボタンのイベント
     if (scanButton) {
-        scanButton.addEventListener('click', function() {
+        scanButton.addEventListener('click', () => {
             qrScanner.startScan();
         });
     }
 
     // ID検索ボタンのイベント
     if (idSearchButton) {
-        idSearchButton.addEventListener('click', function() {
+        idSearchButton.addEventListener('click', () => {
             const userId = idSearchInput.value.trim();
             if (userId) {
                 qrScanner.showSuccessMessage(userId);
@@ -358,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Enter キーでID検索
     if (idSearchInput) {
-        idSearchInput.addEventListener('keypress', function(e) {
+        idSearchInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 idSearchButton.click();
             }

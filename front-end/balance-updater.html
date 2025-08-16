@@ -10,10 +10,11 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add_circle,currency_exchange,dehaze,finance,history,library_add,qr_code,qr_code_scanner,remove,request_quote,settings,supervisor_account,sync_alt,wallet" />
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/qrScanner.css">
   <link rel="stylesheet" href="css/tablet.css">
   <link rel="stylesheet" href="css/mobile.css">
   <link rel="stylesheet" href="css/balance-updater.css">
-  <title>文化祭 カジノ通貨管理アプリ - 残高確認</title>
+  <title>文化祭 カジノ通貨管理アプリ - 残高更新</title>
 
   <script>
     window.addEventListener('DOMContentLoaded', function () {
@@ -59,13 +60,7 @@
               <button class="btn check-balance-btn">ID 検索</button>
             </div>
 
-            <div class="error-message">
-              <p>該当するIDが見つかりませんでした。</p>
-            </div>
-
-            <div class="success-message">
-              <p>${ID}の残高：$<span id="current-balance">0</span></p>
-            </div>
+            <div id="message-area"></div>
 
             <div class="update-balance-wrapper">
               <label for="amount">入金 or 出金額</label>
@@ -73,6 +68,7 @@
                 <span>$</span>
                 <input type="number" id="amount" min="0" placeholder="0">
               </div>
+              <div id="update-error-message-area"></div>
               <div class="flex-content">
                 <button class="btn add-btn">＋ 入金</button>
                 <button class="btn subtract-btn">ー 出金</button>
@@ -125,6 +121,7 @@
 
   <script src="js/slideIn.js"></script>
   <script src="js/tabControl.js"></script>
+  <script src="js/balanceChecker.js"></script>
   <script src="js/theme.js"></script>
 </body>
 
