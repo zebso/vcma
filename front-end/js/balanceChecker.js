@@ -11,37 +11,9 @@ class QRScanner {
         this.messageArea = null;
     }
 
-    // jsQRライブラリを動的に読み込み
-    async loadJsQR() {
-        if (this.jsQR) return;
-
-        try {
-            // jsQRライブラリをCDNから読み込み
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js';
-            document.head.appendChild(script);
-
-            return new Promise((resolve, reject) => {
-                script.onload = () => {
-                    this.jsQR = window.jsQR;
-                    resolve();
-                };
-                script.onerror = () => {
-                    reject(new Error('jsQRライブラリの読み込みに失敗しました'));
-                };
-            });
-        } catch (error) {
-            throw new Error('jsQRライブラリの読み込みに失敗しました');
-        }
-    }
-
     // カメラを起動してQRコードスキャンを開始
     async startScan() {
         try {
-            this.showMessage('QRライブラリを読み込んでいます...', 'info');
-
-            // jsQRライブラリを読み込み
-            await this.loadJsQR();
 
             this.showMessage('カメラを起動しています...', 'info');
 
