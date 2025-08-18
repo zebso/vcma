@@ -45,30 +45,43 @@
     <main>
       <div class="form">
         <div class="tab">
+
+          <!-- タブ切り替え -->
           <div class="tab-controller">
             <button class="btn current-tab">QRコード検索</button>
             <button class="btn">ID入力検索</button>
           </div>
+
+          <!-- タブコンテンツ -->
           <div class="tab-contents">
+
+            <!-- QRコード検索 -->
             <div class="tab-content">
               <button class="btn scan-qr-btn"><svg width="24" height="24" style="fill: #fff;">
                   <use href="#qr-code-scanner" />
                 </svg>カメラを起動</button>
             </div>
+
+            <!-- ID入力検索 -->
             <div class="tab-content hidden">
               <input type="search" id="id-search" placeholder="Enter ID to search">
               <button class="btn check-balance-btn">ID 検索</button>
             </div>
-
+            
+            <!-- 検索メッセージエリア（JavaScript で制御） -->
             <div id="message-area"></div>
 
+            <!-- 残高更新 -->
             <div class="update-balance-wrapper">
               <label for="amount">入金 or 出金額</label>
               <div class="input-before">
                 <span>$</span>
                 <input type="number" id="amount" min="0" placeholder="0">
               </div>
-              <div id="update-error-message-area"></div>
+
+              <!-- 更新メッセージエリア（JavaScript で制御） -->
+              <div id="update-message-area"></div>
+
               <div class="flex-content">
                 <button class="btn add-btn">＋ 入金</button>
                 <button class="btn subtract-btn">ー 出金</button>
@@ -123,6 +136,7 @@
   <script src="js/tabControl.js"></script>
   <script src="js/jsQR.js"></script>
   <script src="js/balanceChecker.js"></script>
+  <script src="js/balanceUpdater.js"></script>
   <script src="js/theme.js"></script>
 </body>
 

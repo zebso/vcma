@@ -24,7 +24,7 @@ app.get('/api/balance/:id', (req, res) => {
 
 // 入金API
 app.post('/api/add', (req, res) => {
-  const { id, amount, games } = req.body;
+  const { id, amount, games, dealer } = req.body;
   const users = loadJSON(usersFile);
   const history = loadJSON(historyFile);
 
@@ -40,7 +40,7 @@ app.post('/api/add', (req, res) => {
     type: 'add',
     amount: Number(amount),
     balance: user.balance,
-    dealer: 'dealer1'
+    dealer
   });
 
   saveJSON(usersFile, users);
@@ -51,7 +51,7 @@ app.post('/api/add', (req, res) => {
 
 // 出金API
 app.post('/api/subtract', (req, res) => {
-  const { id, amount, games } = req.body;
+  const { id, amount, games, dealer } = req.body;
   const users = loadJSON(usersFile);
   const history = loadJSON(historyFile);
 
@@ -67,7 +67,7 @@ app.post('/api/subtract', (req, res) => {
     type: 'subtract',
     amount: -Number(amount),
     balance: user.balance,
-    dealer: 'dealer1'
+    dealer
   });
 
   saveJSON(usersFile, users);
@@ -78,5 +78,5 @@ app.post('/api/subtract', (req, res) => {
 
 //サーバー立ち上げ
 app.listen(PORT, () => {
-  console.log(`The server is running at http://localhost:${PORT}`);
+  console.log(`The Dashboard page is at http://localhost:${PORT}/dashboard.html`);
 });

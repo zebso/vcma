@@ -22,3 +22,8 @@
 
   }
 }
+
+/* メッセージエリアのスタイル */
+#update-message-area {
+    margin-top: 16px;
+}

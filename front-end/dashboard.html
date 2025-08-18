@@ -94,21 +94,31 @@
             </svg>残高確認＆更新</h3>
 
           <div class="tab">
+
+            <!-- タブ切り替え -->
             <div class="tab-controller">
               <button class="btn current-tab">QRコード検索</button>
               <button class="btn">ID入力検索</button>
             </div>
+
+            <!-- タブコンテンツ -->
             <div class="tab-contents">
+
+              <!-- QRコード検索 -->
               <div class="tab-content">
                 <button class="btn scan-qr-btn"><svg width="24" height="24" style="fill: #fff;">
                     <use href="#qr-code-scanner" />
                   </svg>カメラを起動</button>
               </div>
+
+              <!-- ID入力検索 -->
               <div class="tab-content hidden">
                 <input type="search" id="id-search" placeholder="Enter ID to search">
                 <button class="btn check-balance-btn">ID 検索</button>
               </div>
-              <div class="update-balance-wrapper hidden">
+
+              <!-- 残高更新 -->
+              <div class="update-balance-wrapper">
                 <label for="amount">入金 or 出金額</label>
                 <div class="input-before">
                   <span>$</span>
