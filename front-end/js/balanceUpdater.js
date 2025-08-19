@@ -1,5 +1,3 @@
-import { BalanceChecker, userIDGlobal } from './balanceChecker.js';
-
 class BalanceUpdater {
   constructor() {
     this.messageArea = null;
@@ -62,9 +60,24 @@ class BalanceUpdater {
   }
 
   // 残高更新
-  async updateBalance(userId, type) {
+  async updateBalance(type) {
     try {
-      // APIエンドポイント
+
+      const amountInput = document.querySelector('#amount');
+      const amount = parseFloat(amountInput.value);
+
+      if (isNaN(amount) || amount <= 0) {
+        this.showError('有効な金額を入力してください。');
+        return;
+      }
+
+      const id = window.currentUserId || '';
+
+      if (!id) {
+        this.showError('IDが設定されていません。まずユーザーを検索してください。');
+        return;
+      }
+
       const apiUrl = `/api/${type}`;
 
       const response = await fetch(apiUrl, {
@@ -73,21 +86,21 @@ class BalanceUpdater {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          id: userId,
+          id,
           amount,
           games: '',
           dealer: 'dealer1'
         })
       });
 
-      if (response.ok) {
-        const data = await response.json();
+      const data = await response.json();
+
+      if (data.success) {
+        this.showSuccessMessage(id);
         this.displayUpdatedBalance(data.balance);
         this.resetAmountInput();
-      } else if (response.status === 404) {
-        this.showError('該当するIDが見つかりませんでした。');
       } else {
-        this.showError('残高の取得に失敗しました。');
+        this.showError('残高の更新に失敗しました。');
       }
     } catch (error) {
       console.error('API呼び出しエラー:', error);
@@ -96,52 +109,44 @@ class BalanceUpdater {
 
   // 入力フィールドをリセット
   resetAmountInput() {
-    const amountInput = document.querySelector('#amount');
-    if (amountInput) {
-      amountInput.value = '';
+    if (!this.amountInput) {
+      this.amountInput = document.querySelector('#amount');
+    }
+
+    if (this.amountInput) {
+      this.amountInput.value = '';
     }
   }
 }
 
 // インスタンスを作成
 const balanceUpdater = new BalanceUpdater();
-const balanceChecker = new BalanceChecker();
 
 // DOMContentLoaded後に初期化
 document.addEventListener('DOMContentLoaded', () => {
   const addButton = document.querySelector('.add-btn');
   const subtractButton = document.querySelector('.subtract-btn');
-  const amountInput = document.querySelector('#amount');
+
+  // 初期状態でボタンを無効化
+  if (addButton) {
+    addButton.disabled = true;
+    addButton.style.opacity = '0.5';
+    addButton.style.cursor = 'not-allowed';
+  }
+
+  if (subtractButton) {
+    subtractButton.disabled = true;
+    subtractButton.style.opacity = '0.5';
+    subtractButton.style.cursor = 'not-allowed';
+  }
 
   // 残高入金処理
   if (addButton) {
-    addButton.addEventListener('click', () => {
-      if (!userIDGlobal) {
-        balanceChecker.showError('ユーザーIDが未設定です。');
-        return;
-      }
-
-      const amount = parseFloat(amountInput.value);
-
-      if (isNaN(amount) || amount <= 0) {
-        balanceUpdater.showError('有効な金額を入力してください。');
-      } else {
-        balanceUpdater.updateBalance(userIDGlobal, 'add', amount);
-      }
-    });
+    addButton.addEventListener('click', () => balanceUpdater.updateBalance('add'));
   }
 
   // 残高出金処理
   if (subtractButton) {
-    subtractButton.addEventListener('click', () => {
-    
-      const amount = parseFloat(amountInput.value);
-
-      if (isNaN(amount) || amount <= 0) {
-        balanceUpdater.showError('有効な金額を入力してください。');
-      } else {
-        balanceUpdater.updateBalance('subtract', amount);
-      }
-    });
+    subtractButton.addEventListener('click', () => balanceUpdater.updateBalance('subtract'));
   }
 });

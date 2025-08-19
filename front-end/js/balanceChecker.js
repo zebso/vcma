@@ -1,5 +1,4 @@
-//　グローバル変数（balanceUpdater.jsにIDを渡す）
-let userIdGlobal = '';
+window.currentUserId = '';
 
 class BalanceChecker {
   constructor() {
@@ -55,19 +54,19 @@ class BalanceChecker {
     const overlay = document.createElement('div');
     overlay.id = 'qr-scanner-overlay';
     overlay.innerHTML = `
-<div class="scanner-container">
-<div class="scanner-header">
-    <h3>QRコードをスキャン</h3>
-    <button class="close-scanner-btn" type="button">×</button>
-</div>
-<div class="video-container">
-    ${this.video.outerHTML}
-    <div class="scan-frame"></div>
-</div>
-<p class="scan-instruction">QRコードをカメラに向けてください</p>
-<div class="scan-status" id="scan-status">スキャンしています...</div>
-</div>
-`;
+      <div class="scanner-container">
+        <div class="scanner-header">
+          <h3>QRコードをスキャン</h3>
+          <button class="close-scanner-btn" type="button">×</button>
+        </div>
+        <div class="video-container">
+          ${this.video.outerHTML}
+          <div class="scan-frame"></div>
+        </div>
+        <p class="scan-instruction">QRコードをカメラに向けてください</p>
+        <div class="scan-status" id="scan-status">スキャンしています...</div>
+      </div>
+    `;
 
     document.body.appendChild(overlay);
 
@@ -208,10 +207,10 @@ class BalanceChecker {
           'info-message';
 
       this.messageArea.innerHTML = `
-<div class="${messageClass}">
-    <p>${message}</p>
-</div>
-`;
+        <div class="${messageClass}">
+          <p>${message}</p>
+        </div>
+      `;
     }
   }
 
@@ -222,14 +221,56 @@ class BalanceChecker {
     }
   }
 
+  // BalanceUpdaterのボタンを有効化
+  enableBalanceUpdaterButtons() {
+    const addButton = document.querySelector('.add-btn');
+    const subtractButton = document.querySelector('.subtract-btn');
+
+    if (addButton) {
+      addButton.disabled = false;
+      addButton.style.opacity = '1';
+      addButton.style.cursor = 'pointer';
+    }
+
+    if (subtractButton) {
+      subtractButton.disabled = false;
+      subtractButton.style.opacity = '1';
+      subtractButton.style.cursor = 'pointer';
+    }
+  }
+
+  // BalanceUpdaterのボタンを無効化
+  disableBalanceUpdaterButtons() {
+    const addButton = document.querySelector('.add-btn');
+    const subtractButton = document.querySelector('.subtract-btn');
+
+    if (addButton) {
+      addButton.disabled = true;
+      addButton.style.opacity = '0.5';
+      addButton.style.cursor = 'not-allowed';
+    }
+
+    if (subtractButton) {
+      subtractButton.disabled = true;
+      subtractButton.style.opacity = '0.5';
+      subtractButton.style.cursor = 'not-allowed';
+    }
+  }
+
   // 成功メッセージ表示
   showSuccessMessage(userId) {
     this.showMessage(`${userId}の残高：$<span id="current-balance">読み込み中...</span>`, 'success');
+    // グローバル変数に現在のユーザーIDを保存
+    window.currentUserId = userId;
+    this.enableBalanceUpdaterButtons();
   }
 
   // エラーメッセージ表示
   showError(message) {
     this.showMessage(message, 'error');
+    // エラー時はユーザーIDをクリア
+    window.currentUserId = '';
+    this.disableBalanceUpdaterButtons();
   }
 
   // 残高確認
@@ -241,21 +282,15 @@ class BalanceChecker {
       const response = await fetch(apiUrl);
 
       if (response.ok) {
-        // グローバル変数にユーザーIDを保存
-        userIdGlobal = userId;
-
         const data = await response.json();
         this.displayBalance(data.balance);
       } else if (response.status === 404) {
         this.showError('該当するIDが見つかりませんでした。');
-        userIdGlobal = '';
       } else {
         this.showError('残高の取得に失敗しました。');
-        userIdGlobal = '';
       }
     } catch (error) {
       console.error('API呼び出しエラー:', error);
-      userIdGlobal = '';
     }
   }
 
@@ -291,9 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // QRスキャンボタンのイベント
   if (scanButton) {
-    scanButton.addEventListener('click', () => {
-      balanceChecker.startScan();
-    });
+    scanButton.addEventListener('click', () => balanceChecker.startScan());
   }
 
   // ID検索ボタンのイベント
@@ -311,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Enter キーでID検索
   if (idSearchInput) {
-    idSearchInput.addEventListener('keypress', function (e) {
+    idSearchInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
         idSearchButton.click();
       }
