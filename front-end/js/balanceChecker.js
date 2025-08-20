@@ -10,6 +10,9 @@ class BalanceChecker {
     this.scanInterval = null;
     this.jsQR = null;
     this.messageArea = null;
+    this.detectionResults = []; // 複数回の検出結果を保存
+    this.requiredDetections = 2; // 連続検出回数を減らす
+    this.maxDetectionResults = 3; // 保存する最大検出結果数を減らす
   }
 
   // カメラを起動してQRコードスキャンを開始
@@ -24,23 +27,31 @@ class BalanceChecker {
       // カメラストリームを取得
       this.stream = await navigator.mediaDevices.getUserMedia({
         video: {
-          facingMode: 'environment', // 背面カメラを優先
+          facingMode: 'environment',
           width: { ideal: 1280 },
           height: { ideal: 720 }
         }
       });
 
+      // loadedmetadata前にリスナーを登録
+      this.video.addEventListener('loadedmetadata', () => {
+        if (this.scanning) this.startQRDetection();
+      }, { once: true });
+
       this.video.srcObject = this.stream;
-      this.video.play();
+      await this.video.play().catch(()=>{});
+
+      // jsQR ライブラリ参照を確実に取得
+      this.jsQR = window.jsQR || this.jsQR;
 
       this.scanning = true;
       this.showScannerUI();
       this.hideMessage();
 
-      // QRコード検出を開始
-      this.video.addEventListener('loadedmetadata', () => {
+      // 既にメタデータが読まれている場合のフォールバック
+      if (this.video.readyState >= this.video.HAVE_METADATA) {
         this.startQRDetection();
-      });
+      }
 
     } catch (error) {
       console.error('カメラアクセスエラー:', error);
@@ -50,7 +61,6 @@ class BalanceChecker {
 
   // スキャナーUIを表示
   showScannerUI() {
-    // スキャナーオーバーレイを作成
     const overlay = document.createElement('div');
     overlay.id = 'qr-scanner-overlay';
     overlay.innerHTML = `
@@ -59,31 +69,21 @@ class BalanceChecker {
           <h3>QRコードをスキャン</h3>
           <button class="close-scanner-btn" type="button">×</button>
         </div>
-        <div class="video-container">
-          ${this.video.outerHTML}
+        <div class="video-container" id="video-slot">
           <div class="scan-frame"></div>
         </div>
         <p class="scan-instruction">QRコードをカメラに向けてください</p>
         <div class="scan-status" id="scan-status">スキャンしています...</div>
-      </div>
-    `;
-
+      </div>`;
     document.body.appendChild(overlay);
 
-    // 新しく作成されたvideo要素を取得し直す
-    this.video = overlay.querySelector('video');
-    this.video.srcObject = this.stream;
+    // 既存videoノードをそのまま挿入（クローンしない）
+    const slot = overlay.querySelector('#video-slot');
+    slot.insertBefore(this.video, slot.firstChild);
 
     // 閉じるボタンのイベント
     overlay.querySelector('.close-scanner-btn').addEventListener('click', () => {
       this.stopScan();
-    });
-
-    // オーバーレイクリックで閉じる
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        this.stopScan();
-      }
     });
 
     // ESCキーで閉じる
@@ -110,40 +110,69 @@ class BalanceChecker {
 
   // QRコード検出を開始
   startQRDetection() {
+    this.detectionResults = [];
     this.scanInterval = setInterval(() => {
       if (this.video.readyState === this.video.HAVE_ENOUGH_DATA) {
         this.detectQRCode();
       }
-    }, 200); // 200msごとに検出
+  }, 200); // 200msごとに検出（安定性重視）
   }
 
   // QRコード検出処理
   detectQRCode() {
-    if (!this.scanning || !this.jsQR) return;
+    if (!this.scanning) return;
+    const jsQRFn = this.jsQR || window.jsQR;
+    if (!jsQRFn) {
+      this.updateScanStatus('QRライブラリ未読み込み');
+      return;
+    }
 
     const { videoWidth, videoHeight } = this.video;
     if (videoWidth === 0 || videoHeight === 0) return;
 
     this.canvas.width = videoWidth;
     this.canvas.height = videoHeight;
-
-    // ビデオフレームをキャンバスに描画
     this.context.drawImage(this.video, 0, 0, videoWidth, videoHeight);
 
-    // 画像データを取得
     const imageData = this.context.getImageData(0, 0, videoWidth, videoHeight);
 
-    // jsQRでQRコード検出
     try {
-      const code = this.jsQR(imageData.data, imageData.width, imageData.height);
+      // 通常の検出
+      let code = jsQRFn(imageData.data, imageData.width, imageData.height);
+      
+      // 失敗した場合は反転を試行
+      if (!code) {
+        code = jsQRFn(imageData.data, imageData.width, imageData.height, {
+          inversionAttempts: "attemptBoth"
+        });
+      }
+      
       if (code) {
-        this.onQRCodeDetected(code.data);
+        this.handleDetection(code.data);
       } else {
         this.updateScanStatus('QRコードを探しています...');
       }
     } catch (error) {
       console.error('QRコード検出エラー:', error);
-      this.updateScanStatus('エラーが発生しました');
+    }
+  }
+
+  // 検出結果の処理
+  handleDetection(qrData) {
+    this.detectionResults.push(qrData);
+
+    if (this.detectionResults.length > this.maxDetectionResults) {
+      this.detectionResults.shift();
+    }
+
+    const lastDetections = this.detectionResults.slice(-this.requiredDetections);
+    const isConsistent = lastDetections.length === this.requiredDetections && 
+                        lastDetections.every(result => result === qrData);
+
+    if (isConsistent) {
+      this.onQRCodeDetected(qrData);
+    } else {
+      this.updateScanStatus(`検出中... (${this.detectionResults.length}/${this.requiredDetections})`);
     }
   }
 
@@ -157,7 +186,6 @@ class BalanceChecker {
 
   // QRコード検出成功時の処理
   onQRCodeDetected(qrData) {
-
     this.updateScanStatus('QRコードを検出しました！');
 
     // スキャン停止
@@ -175,6 +203,7 @@ class BalanceChecker {
   // スキャン停止
   stopScan() {
     this.scanning = false;
+    this.detectionResults = [];
 
     // スキャン間隔をクリア
     if (this.scanInterval) {
@@ -263,6 +292,11 @@ class BalanceChecker {
     // グローバル変数に現在のユーザーIDを保存
     window.currentUserId = userId;
     this.enableBalanceUpdaterButtons();
+    // バランス更新ボタンの状態を更新
+    if (typeof window.updateBalanceButtonStates === 'function') {
+      window.updateBalanceButtonStates();
+    }
+    document.querySelector('#update-message-area').innerHTML = ''; // メッセージエリアをクリア
   }
 
   // エラーメッセージ表示
@@ -271,6 +305,10 @@ class BalanceChecker {
     // エラー時はユーザーIDをクリア
     window.currentUserId = '';
     this.disableBalanceUpdaterButtons();
+    // バランス更新ボタンの状態を更新
+    if (typeof window.updateBalanceButtonStates === 'function') {
+      window.updateBalanceButtonStates();
+    }
   }
 
   // 残高確認
@@ -332,6 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ID検索ボタンのイベント
   if (idSearchButton) {
     idSearchButton.addEventListener('click', () => {
+      document.querySelector('#update-message-area').innerHTML = ''; // メッセージエリアをクリア
       const userId = idSearchInput.value.trim();
       if (userId) {
         balanceChecker.showSuccessMessage(userId);

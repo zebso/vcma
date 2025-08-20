@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/tablet.css">
   <link rel="stylesheet" href="css/mobile.css">
+  <link rel="stylesheet" href="css/qrScanner.css">
   <title>文化祭 カジノ通貨管理アプリ</title>
 
   <script>
@@ -117,6 +118,40 @@
                 <button class="btn check-balance-btn">ID 検索</button>
               </div>
 
+              <!-- 検索メッセージエリア（JavaScript で制御） -->
+              <div id="message-area"></div>
+
+              <!-- ゲーム選択 -->
+              <div class="game-selection-wrapper">
+                <label class="game-selection-title">ゲームの種類</label>
+                <div class="radio-group">
+                  <div class="radio-item">
+                    <input type="radio" id="blackjack" name="game-type" value="blackjack">
+                    <label for="blackjack">ブラックジャック</label>
+                  </div>
+                  <div class="radio-item">
+                    <input type="radio" id="poker" name="game-type" value="poker">
+                    <label for="poker">ポーカー</label>
+                  </div>
+                  <div class="radio-item">
+                    <input type="radio" id="baccarat" name="game-type" value="baccarat">
+                    <label for="baccarat">バカラ</label>
+                  </div>
+                  <div class="radio-item">
+                    <input type="radio" id="roulette" name="game-type" value="roulette">
+                    <label for="roulette">ルーレット</label>
+                  </div>
+                  <div class="radio-item">
+                    <input type="radio" id="slot" name="game-type" value="slot">
+                    <label for="slot">スロット</label>
+                  </div>
+                  <div class="radio-item">
+                    <input type="radio" id="other" name="game-type" value="other">
+                    <label for="other">その他</label>
+                  </div>
+                </div>
+              </div>
+
               <!-- 残高更新 -->
               <div class="update-balance-wrapper">
                 <label for="amount">入金 or 出金額</label>
@@ -124,6 +159,10 @@
                   <span>$</span>
                   <input type="number" id="amount" min="0" placeholder="0">
                 </div>
+
+                <!-- 更新メッセージエリア（JavaScript で制御） -->
+                <div id="update-message-area"></div>
+
                 <div class="flex-content">
                   <button class="btn add-btn">＋ 入金</button>
                   <button class="btn subtract-btn">ー 出金</button>
@@ -146,51 +185,9 @@
             </svg>ランキング</h3>
 
           <div class="ranking-top-contents">
-            <div class="ranking-content">
-              <p class="user-id">CC-2025-K9O00S</p>
-              <h3 class="point">$15,500</h3>
-            </div>
-            <div class="ranking-content">
-              <p class="user-id">CC-2025-K9O00A</p>
-              <h3 class="point">$18,750</h3>
-            </div>
-            <div class="ranking-content">
-              <p class="user-id">CC-2025-K9O00T</p>
-              <h3 class="point">$12,300</h3>
-            </div>
           </div>
 
           <div class="ranking-bottom-contents">
-            <div class="ranking-content">
-              <div class="rank-section">
-                <div class="rank-num">4</div>
-                <div class="user-info">
-                  <div class="user-id">CC-2025-K9O00B</div>
-                  <div class="user-name">Player B</div>
-                </div>
-              </div>
-              <div class="point">$10,800</div>
-            </div>
-            <div class="ranking-content">
-              <div class="rank-section">
-                <div class="rank-num">5</div>
-                <div class="user-info">
-                  <div class="user-id">CC-2025-K9O00C</div>
-                  <div class="user-name">Player C</div>
-                </div>
-              </div>
-              <div class="point">$9,200</div>
-            </div>
-            <div class="ranking-content">
-              <div class="rank-section">
-                <div class="rank-num">6</div>
-                <div class="user-info">
-                  <div class="user-id">CC-2025-K9O00D</div>
-                  <div class="user-name">Player D</div>
-                </div>
-              </div>
-              <div class="point">$7,600</div>
-            </div>
           </div>
         </div>
       </div>
@@ -206,7 +203,7 @@
 
         <h3><svg width="24" height="24" style="fill: #d97706;">
             <use href="#history" />
-          </svg>取引履歴</h3>
+          </svg>取引履歴（直近5件）</h3>
         <div class="table-wrapper">
           <table>
             <thead>
@@ -220,34 +217,10 @@
                 <th>ディーラー</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody data-limit="5">
+              <!--履歴の行はJavaScriptで動的に追加-->
               <tr>
-                <td>2025/7/19 21:20:34</td>
-                <td>CC-2025-K9O00R</td>
-                <td>ブラックジャック</td>
-                <td><span class="add">＋ 入金</span></td>
-                <td>$100</td>
-                <td>$9,600</td>
-                <td>ディーラーA</td>
-              </tr>
-              <tr>
-                <td>2025/7/18 15:06:36</td>
-                <td>CC-2025-K9O00R</td>
-                <td>ブラックジャック</td>
-                <td><span class="subtract">ー 出金</span>
-                </td>
-                <td class="minus">$-500</td>
-                <td>$9,500</td>
-                <td>ディーラーB</td>
-              </tr>
-              <tr>
-                <td>2025/7/18 15:04:58</td>
-                <td>CC-2025-K9O00R</td>
-                <td>ルーレット</td>
-                <td><span class="generate">＋ 生成</span></td>
-                <td>$10,000</td>
-                <td>$10,000</td>
-                <td>ディーラーC</td>
+                <td colspan="7" class="loading">読み込み中...</td>
               </tr>
             </tbody>
           </table>
@@ -297,6 +270,11 @@
 
   <script src="js/slideIn.js"></script>
   <script src="js/tabControl.js"></script>
+  <script src="js/jsQR.js"></script>
+  <script src="js/balanceChecker.js"></script>
+  <script src="js/balanceUpdater.js"></script>
+  <script src="js/historyUpdater.js"></script>
+  <script src="js/rankingUpdater.js"></script>
   <script src="js/theme.js"></script>
 </body>
 

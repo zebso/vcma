@@ -71,6 +71,37 @@
             <!-- 検索メッセージエリア（JavaScript で制御） -->
             <div id="message-area"></div>
 
+            <!-- ゲーム選択 -->
+            <div class="game-selection-wrapper">
+              <label class="game-selection-title">ゲームの種類</label>
+              <div class="radio-group">
+                <div class="radio-item">
+                  <input type="radio" id="blackjack" name="game-type" value="blackjack">
+                  <label for="blackjack">ブラックジャック</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="poker" name="game-type" value="poker">
+                  <label for="poker">ポーカー</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="baccarat" name="game-type" value="baccarat">
+                  <label for="baccarat">バカラ</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="roulette" name="game-type" value="roulette">
+                  <label for="roulette">ルーレット</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="slot" name="game-type" value="slot">
+                  <label for="slot">スロット</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="other" name="game-type" value="other">
+                  <label for="other">その他</label>
+                </div>
+              </div>
+            </div>
+
             <!-- 残高更新 -->
             <div class="update-balance-wrapper">
               <label for="amount">入金 or 出金額</label>

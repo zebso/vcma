@@ -59,33 +59,9 @@
               </tr>
             </thead>
             <tbody>
+              <!--履歴の行はJavaScriptで動的に追加-->
               <tr>
-                <td>2025/7/19 21:20:34</td>
-                <td>CC-2025-K9O00R</td>
-                <td>ブラックジャック</td>
-                <td><span class="add">＋ 入金</span></td>
-                <td>$100</td>
-                <td>$9,600</td>
-                <td>ディーラーA</td>
-              </tr>
-              <tr>
-                <td>2025/7/18 15:06:36</td>
-                <td>CC-2025-K9O00R</td>
-                <td>ブラックジャック</td>
-                <td><span class="subtract">ー 出金</span>
-                </td>
-                <td class="minus">$-500</td>
-                <td>$9,500</td>
-                <td>ディーラーB</td>
-              </tr>
-              <tr>
-                <td>2025/7/18 15:04:58</td>
-                <td>CC-2025-K9O00R</td>
-                <td>ルーレット</td>
-                <td><span class="generate">＋ 生成</span></td>
-                <td>$10,000</td>
-                <td>$10,000</td>
-                <td>ディーラーC</td>
+                <td colspan="7" class="loading">読み込み中...</td>
               </tr>
             </tbody>
           </table>
@@ -134,6 +110,7 @@
   <div id="close-nav"></div>
 
   <script src="js/slideIn.js"></script>
+  <script src="js/historyUpdater.js"></script>
   <script src="js/theme.js"></script>
 </body>
 
