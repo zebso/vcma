@@ -6,9 +6,9 @@
 
 ```jsonc
 cd back-end  （またはback-endでターミナルを開く）
+npm run dev  （これでサーバー起動）
+http://localhost:3000/dashboard.html を開く（サーバー起動時にコンソールに表示してる）
 ```
-2. npm run dev  （これでサーバー起動）
-3. http://localhost:3000/dashboard.html を開く（サーバー起動時にコンソールに表示してる）
 
 ---
 
