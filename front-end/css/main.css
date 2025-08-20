@@ -268,10 +268,7 @@ main {
   }
 
   .radio-group .radio-item input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    inset: 0;
-    cursor: pointer;
+    display: none;
   }
 
   .radio-group .radio-item label {
