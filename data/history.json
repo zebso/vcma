@@ -1,5 +1,41 @@
 [
   {
+    "timestamp": "2025-08-20T15:06:47.607Z",
+    "id": "CC-2025-0NS9EN",
+    "games": "poker",
+    "type": "add",
+    "amount": 100,
+    "balance": 300,
+    "dealer": "dealer1"
+  },
+  {
+    "timestamp": "2025-08-20T15:02:50.700Z",
+    "id": "CC-2025-0NS9EN",
+    "games": "baccarat",
+    "type": "add",
+    "amount": 100,
+    "balance": 200,
+    "dealer": "dealer1"
+  },
+  {
+    "timestamp": "2025-08-20T15:00:34.413Z",
+    "id": "CC-2025-0G5QEP",
+    "games": "",
+    "type": "generate",
+    "amount": 100,
+    "balance": 100,
+    "dealer": ""
+  },
+  {
+    "timestamp": "2025-08-20T14:59:34.892Z",
+    "id": "CC-2025-087AZR",
+    "games": "",
+    "type": "generate",
+    "amount": 100,
+    "balance": 100,
+    "dealer": ""
+  },
+  {
     "timestamp": "2025-08-20T14:43:26.626Z",
     "id": "CC-2025-0NS9EN",
     "games": "",

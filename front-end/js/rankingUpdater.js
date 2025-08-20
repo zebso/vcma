@@ -56,7 +56,7 @@
     top.innerHTML = '';
     bottom.innerHTML = '';
 
-    const arranged = (window.AppUtils && window.AppUtils.arrangeTop3) ? window.AppUtils.arrangeTop3(limited) : limited.slice(0, 3);
+    const arranged = limited.slice(0, 3);
     arranged.forEach((entry, i) => top.appendChild(createTopCard(entry, i === 0 ? 'first' : i === 1 ? 'second' : 'third')));
 
     for (let i = 3; i < limited.length; i++) bottom.appendChild(createRow(limited[i], i + 1));

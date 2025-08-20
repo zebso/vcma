@@ -46,7 +46,7 @@
       const data = await res.json();
       setMsg(`作成成功: ${data.user.id} (残高 ${data.user.balance})`,'success');
       idInput.value='';
-      balInput.value='0';
+      balInput.value='100';
       validate();
     } catch(err){
       console.error(err);

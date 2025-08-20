@@ -79,16 +79,6 @@
   // ポーリング間隔集約
   const POLL_INTERVALS = Object.freeze({ ranking: 6000, history: 5000, stats: 7000 });
 
-  // ランキングTop3配置（2位,1位,3位）
-  function arrangeTop3(arr) {
-    if (!Array.isArray(arr)) return [];
-    const top3 = arr.slice(0, 3);
-    if (top3.length === 1) return [top3[0]];
-    if (top3.length === 2) return [top3[1], top3[0]];
-    if (top3.length === 3) return [top3[1], top3[0], top3[2]];
-    return top3;
-  }
-
   // セレクタ集約
   const selectors = Object.freeze({
     updateMessageArea: '#update-message-area',

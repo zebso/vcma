@@ -1,6 +1,14 @@
 [
   {
     "id": "CC-2025-0NS9EN",
+    "balance": 300
+  },
+  {
+    "id": "CC-2025-087AZR",
+    "balance": 100
+  },
+  {
+    "id": "CC-2025-0G5QEP",
     "balance": 100
   }
 ]

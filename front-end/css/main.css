@@ -603,6 +603,7 @@ button svg {
 
       /* 2位 (左) */
       &#ranking-second {
+        order: 1;
         flex: 0 1 200px;
         margin-top: 40px;
         border-color: #c0c0c0;
@@ -628,6 +629,7 @@ button svg {
 
       /* 1位 (中央) */
       &#ranking-first {
+        order: 2;
         flex: 0 1 240px;
         border-color: #ffd700;
         box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
@@ -661,6 +663,7 @@ button svg {
 
       /* 3位 (右) */
       &#ranking-third {
+        order: 3;
         flex: 0 1 180px;
         align-self: flex-end;
         margin-top: 60px;

@@ -1,7 +1,17 @@
 [
   {
     "id": "CC-2025-0NS9EN",
-    "balance": 100,
+    "balance": 300,
     "createdAt": "2025-08-20T14:43:26.626Z"
+  },
+  {
+    "id": "CC-2025-087AZR",
+    "balance": 100,
+    "createdAt": "2025-08-20T14:59:34.890Z"
+  },
+  {
+    "id": "CC-2025-0G5QEP",
+    "balance": 100,
+    "createdAt": "2025-08-20T15:00:34.412Z"
   }
 ]
