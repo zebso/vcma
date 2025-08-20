@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2025-08-20T13:04:39.302Z",
+    "id": "CC-2025-2FJJKE",
+    "games": "baccarat",
+    "type": "add",
+    "amount": 10000,
+    "balance": 11450,
+    "dealer": "dealer1"
+  },
+  {
     "timestamp": "2025-08-20T12:29:28.246Z",
     "id": "CC-2025-2FJJKE",
     "games": "blackjack",

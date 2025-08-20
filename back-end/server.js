@@ -115,6 +115,28 @@ app.get('/api/ranking', (req, res) => {
   res.json(ranking);
 });
 
+// ダッシュボード統計API
+app.get('/api/dashboard-stats', (req, res) => {
+  try {
+    const users = loadJSON(usersFile);
+    const history = loadJSON(historyFile);
+    const activeIds = users.length;
+    const totalBalance = users.reduce((sum, u) => sum + Number(u.balance || 0), 0);
+    const totalTransactions = history.length; // 全期間
+    // 今日の日付判定 (JST基準にするなら調整) 現在はUTC日付
+    const todayStr = new Date().toISOString().slice(0,10);
+    const todaysTransactions = history.filter(h => (h.timestamp||'').startsWith(todayStr)).length;
+    res.json({
+      activeIds,
+      totalBalance,
+      totalTransactions,
+      todaysTransactions
+    });
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to compute stats' });
+  }
+});
+
 //サーバー立ち上げ
 app.listen(PORT, () => {
   console.log(`The Dashboard page is at http://localhost:${PORT}/dashboard.html`);

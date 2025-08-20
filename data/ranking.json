@@ -1,5 +1,9 @@
 [
   {
+    "id": "CC-2025-2FJJKE",
+    "balance": 11450
+  },
+  {
     "id": "CC-2025-A00001",
     "balance": 2500
   },
@@ -28,24 +32,20 @@
     "balance": 1550
   },
   {
-    "id": "CC-2025-2FJJKE",
-    "balance": 1450
-  },
-  {
     "id": "CC-2025-A00008",
     "balance": 1400
   },
   {
-    "id": "CC-2025-9X6RVB",
-    "balance": 1100
+    "id": "CC-2025-A00009",
+    "balance": 1300
   },
   {
     "id": "CC-2025-A00010",
     "balance": 1200
   },
   {
-    "id": "CC-2025-A00009",
-    "balance": 1300
+    "id": "CC-2025-9X6RVB",
+    "balance": 1100
   },
   {
     "id": "CC-2025-A00011",
