@@ -5,29 +5,14 @@ class BalanceUpdater {
 
   // メッセージ表示
   showMessage(message, type = 'info') {
-    if (!this.messageArea) {
-      this.messageArea = document.querySelector('#update-message-area');
-    }
-
-    if (this.messageArea) {
-      const messageClass = type === 'error' ? 'error-message' :
-        type === 'success' ? 'success-message' :
-          'info-message';
-
-      this.messageArea.innerHTML = `
-        <div class="${messageClass}">
-          <p>${message}</p>
-        </div>
-      `;
+    if (!this.messageArea) this.messageArea = document.querySelector((window.AppUtils && window.AppUtils.selectors.updateMessageArea) || '#update-message-area');
+    if (window.AppUtils && this.messageArea) {
+      window.AppUtils.showInlineMessage(this.messageArea, message, type);
     }
   }
 
   // メッセージ非表示
-  hideMessage() {
-    if (this.messageArea) {
-      this.messageArea.innerHTML = '';
-    }
-  }
+  hideMessage() { if (this.messageArea && window.AppUtils) window.AppUtils.clearInlineMessage(this.messageArea); }
 
   // 成功メッセージ（ポップアップ表示）
   showSuccessMessage(userId, amount, type) {
@@ -37,24 +22,9 @@ class BalanceUpdater {
     const old = document.querySelector('.balance-popup');
     if (old) old.remove();
 
-    const sign = type === 'subtract' ? '-' : '+';
-    const formattedAmount = amount.toLocaleString();
-
-    const popup = document.createElement('div');
-    popup.className = 'balance-popup success';
-    popup.setAttribute('role', 'alert');
-    popup.innerHTML = `
-      <button class="close-popup" aria-label="閉じる">&times;</button>
-      <div class="popup-content">
-        <strong>残高更新成功</strong>
-        <p>${userId} の新しい残高：$<span id="updated-balance">…</span> <span class="balance-diff ${sign === '+' ? 'positive' : 'negative'}">(${sign}$${formattedAmount})</span></p>
-      </div>
-    `;
-
-    popup.querySelector('.close-popup').addEventListener('click', () => popup.remove());
-    // 8秒後自動クローズ
-    setTimeout(() => { if (popup.parentNode) popup.remove(); }, 8000);
-    document.body.appendChild(popup);
+    if (window.AppUtils) {
+      window.AppUtils.showBalanceUpdatePopup({ userId, amount, type });
+    }
   }
 
   // エラーメッセージ表示
@@ -62,23 +32,28 @@ class BalanceUpdater {
     this.showMessage(message, 'error');
   }
 
-  // 更新後残高表示
-  displayUpdatedBalance(balance) {
-    const balanceElement = document.querySelector('#updated-balance');
-    if (balanceElement) {
-      // アニメーション効果付きで残高を表示
-      let currentValue = 0;
-      const targetValue = parseFloat(balance);
-      const increment = targetValue / 30;
+  // 数値アニメーション（requestAnimationFrame 使用 / 30フレーム相当）
+  animateValue(el, targetValue) {
+    if (!el) return;
+    if (window.AppUtils && typeof window.AppUtils.animateValue === 'function') {
+      window.AppUtils.animateValue(el, targetValue);
+      return;
+    }
+    // フォールバック（ユーティリティ未読込時）
+    const totalFrames = 30; let frame = 0; const start = 0; const target = Number(targetValue) || 0;
+    const step = () => { frame++; const p = Math.min(frame / totalFrames, 1); const cur = start + (target - start) * p; el.textContent = Math.floor(cur).toLocaleString(); if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }
 
-      const timer = setInterval(() => {
-        currentValue += increment;
-        if (currentValue >= targetValue) {
-          currentValue = targetValue;
-          clearInterval(timer);
-        }
-        balanceElement.textContent = Math.floor(currentValue).toLocaleString();
-      }, 30);
+  // 更新後残高表示（互換ラッパ）
+  displayUpdatedBalance(balance) {
+    const sel = (window.AppUtils && window.AppUtils.selectors && window.AppUtils.selectors.updatedBalance) || '#updated-balance';
+    const balanceElement = document.querySelector(sel);
+    // 共通ユーティリティ側デフォルト時間で実行（common.jsでのみ調整可能）
+    if (window.AppUtils) {
+      window.AppUtils.animateValue(balanceElement, balance);
+    } else {
+      this.animateValue(balanceElement, balance);
     }
   }
 
@@ -112,28 +87,25 @@ class BalanceUpdater {
 
       const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          id,
-          amount,
-          games: selectedGame,
-          dealer: 'dealer1'
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, amount, games: selectedGame, dealer: 'dealer1' })
       });
-
-      const data = await response.json();
-
+      let data = null;
+      try { data = await response.json(); } catch (_) { /* JSONでない */ }
+      if (!response.ok || !data) {
+        this.showError('残高の更新に失敗しました。');
+        return;
+      }
       if (data.success) {
         this.showSuccessMessage(id, amount, type);
         this.displayUpdatedBalance(data.balance);
         this.resetAll();
       } else {
-        this.showError('残高の更新に失敗しました。');
+        this.showError(data.message || '残高の更新に失敗しました。');
       }
     } catch (error) {
-      console.error('API呼び出しエラー:', error);
+      if (window.AppUtils && window.AppUtils.handleApiError) window.AppUtils.handleApiError(error, 'balance-update'); else console.error('API呼び出しエラー:', error);
+      this.showError('通信エラーが発生しました。');
     }
   }
 
@@ -193,38 +165,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const gameRadios = document.querySelectorAll('input[name="game-type"]');
 
   // ボタンの有効化/無効化を制御する関数
-  function updateButtonStates() {
-    const hasUserId = window.currentUserId && window.currentUserId.trim() !== '';
-    const hasAmount = amountInput && amountInput.value && parseFloat(amountInput.value) > 0;
-    const hasGame = Array.from(gameRadios).some(radio => radio.checked);
-    
-    const isValid = hasUserId && hasAmount && hasGame;
-
-    if (addButton) {
-      addButton.disabled = !isValid;
-      addButton.style.opacity = isValid ? '1' : '0.5';
-      addButton.style.cursor = isValid ? 'pointer' : 'not-allowed';
-    }
-
-    if (subtractButton) {
-      subtractButton.disabled = !isValid;
-      subtractButton.style.opacity = isValid ? '1' : '0.5';
-      subtractButton.style.cursor = isValid ? 'pointer' : 'not-allowed';
-    }
-  }
+  function updateButtonStates() { if (window.AppUtils) window.AppUtils.updateBalanceButtons(); }
 
   // 初期状態でボタンを無効化
   updateButtonStates();
 
   // 金額入力の変更を監視
-  if (amountInput) {
-    amountInput.addEventListener('input', updateButtonStates);
-  }
+  amountInput && amountInput.addEventListener('input', updateButtonStates);
 
   // ゲーム選択ラジオボタンの変更を監視
-  gameRadios.forEach(radio => {
-    radio.addEventListener('change', updateButtonStates);
-  });
+  gameRadios.forEach(radio => radio.addEventListener('change', updateButtonStates));
 
   // ユーザー検索後にボタン状態を更新（グローバルに呼び出せるようにする）
   window.updateBalanceButtonStates = updateButtonStates;

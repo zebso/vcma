@@ -39,7 +39,7 @@ class BalanceChecker {
       }, { once: true });
 
       this.video.srcObject = this.stream;
-      await this.video.play().catch(()=>{});
+      await this.video.play().catch(() => { });
 
       // jsQR ライブラリ参照を確実に取得
       this.jsQR = window.jsQR || this.jsQR;
@@ -115,7 +115,7 @@ class BalanceChecker {
       if (this.video.readyState === this.video.HAVE_ENOUGH_DATA) {
         this.detectQRCode();
       }
-  }, 200); // 200msごとに検出（安定性重視）
+    }, 200); // 200msごとに検出（安定性重視）
   }
 
   // QRコード検出処理
@@ -139,14 +139,14 @@ class BalanceChecker {
     try {
       // 通常の検出
       let code = jsQRFn(imageData.data, imageData.width, imageData.height);
-      
+
       // 失敗した場合は反転を試行
       if (!code) {
         code = jsQRFn(imageData.data, imageData.width, imageData.height, {
           inversionAttempts: "attemptBoth"
         });
       }
-      
+
       if (code) {
         this.handleDetection(code.data);
       } else {
@@ -166,8 +166,8 @@ class BalanceChecker {
     }
 
     const lastDetections = this.detectionResults.slice(-this.requiredDetections);
-    const isConsistent = lastDetections.length === this.requiredDetections && 
-                        lastDetections.every(result => result === qrData);
+    const isConsistent = lastDetections.length === this.requiredDetections &&
+      lastDetections.every(result => result === qrData);
 
     if (isConsistent) {
       this.onQRCodeDetected(qrData);
@@ -226,69 +226,21 @@ class BalanceChecker {
 
   // メッセージ表示
   showMessage(message, type = 'info') {
-    if (!this.messageArea) {
-      this.messageArea = document.getElementById('message-area');
-    }
-
-    if (this.messageArea) {
-      const messageClass = type === 'error' ? 'error-message' :
-        type === 'success' ? 'success-message' :
-          'info-message';
-
-      this.messageArea.innerHTML = `
-        <div class="${messageClass}">
-          <p>${message}</p>
-        </div>
-      `;
-    }
+    if (!this.messageArea) this.messageArea = document.querySelector((window.AppUtils && window.AppUtils.selectors.messageArea) || '#message-area');
+    if (window.AppUtils && this.messageArea) window.AppUtils.showInlineMessage(this.messageArea, message, type);
   }
 
   // メッセージ非表示
-  hideMessage() {
-    if (this.messageArea) {
-      this.messageArea.innerHTML = '';
-    }
-  }
+  hideMessage() { if (this.messageArea && window.AppUtils) window.AppUtils.clearInlineMessage(this.messageArea); }
 
   // BalanceUpdaterのボタンを有効化
-  enableBalanceUpdaterButtons() {
-    const addButton = document.querySelector('.add-btn');
-    const subtractButton = document.querySelector('.subtract-btn');
-
-    if (addButton) {
-      addButton.disabled = false;
-      addButton.style.opacity = '1';
-      addButton.style.cursor = 'pointer';
-    }
-
-    if (subtractButton) {
-      subtractButton.disabled = false;
-      subtractButton.style.opacity = '1';
-      subtractButton.style.cursor = 'pointer';
-    }
-  }
-
-  // BalanceUpdaterのボタンを無効化
-  disableBalanceUpdaterButtons() {
-    const addButton = document.querySelector('.add-btn');
-    const subtractButton = document.querySelector('.subtract-btn');
-
-    if (addButton) {
-      addButton.disabled = true;
-      addButton.style.opacity = '0.5';
-      addButton.style.cursor = 'not-allowed';
-    }
-
-    if (subtractButton) {
-      subtractButton.disabled = true;
-      subtractButton.style.opacity = '0.5';
-      subtractButton.style.cursor = 'not-allowed';
-    }
-  }
+  enableBalanceUpdaterButtons() { if (window.AppUtils) window.AppUtils.updateBalanceButtons(); }
+  disableBalanceUpdaterButtons() { if (window.AppUtils) window.AppUtils.updateBalanceButtons(); }
 
   // 成功メッセージ表示
   showSuccessMessage(userId) {
-    this.showMessage(`${userId}の残高：$<span id="current-balance">読み込み中...</span>`, 'success');
+    const currentBalanceId = (window.AppUtils && window.AppUtils.selectors.currentBalance) || '#current-balance';
+    this.showMessage(`${userId}の残高：$<span id="${currentBalanceId.replace('#', '')}">読み込み中...</span>`, 'success');
     // グローバル変数に現在のユーザーIDを保存
     window.currentUserId = userId;
     this.enableBalanceUpdaterButtons();
@@ -318,9 +270,9 @@ class BalanceChecker {
       const apiUrl = `/api/balance/${encodeURIComponent(userId)}`;
 
       const response = await fetch(apiUrl);
-
-      if (response.ok) {
-        const data = await response.json();
+      let data = null;
+      try { data = await response.json(); } catch (_) { }
+      if (response.ok && data) {
         this.displayBalance(data.balance);
       } else if (response.status === 404) {
         this.showError('該当するIDが見つかりませんでした。');
@@ -328,27 +280,20 @@ class BalanceChecker {
         this.showError('残高の取得に失敗しました。');
       }
     } catch (error) {
-      console.error('API呼び出しエラー:', error);
+      if (window.AppUtils && window.AppUtils.handleApiError) window.AppUtils.handleApiError(error, 'balance-check'); else console.error('API呼び出しエラー:', error);
+      this.showError('通信エラーが発生しました。');
     }
   }
 
   // 残高表示
   displayBalance(balance) {
-    const balanceElement = document.querySelector('#current-balance');
-    if (balanceElement) {
-      // アニメーション効果付きで残高を表示
-      let currentValue = 0;
-      const targetValue = parseFloat(balance);
-      const increment = targetValue / 30;
-
-      const timer = setInterval(() => {
-        currentValue += increment;
-        if (currentValue >= targetValue) {
-          currentValue = targetValue;
-          clearInterval(timer);
-        }
-        balanceElement.textContent = Math.floor(currentValue).toLocaleString();
-      }, 30);
+    const sel = (window.AppUtils && window.AppUtils.selectors.currentBalance) || '#current-balance';
+    const el = document.querySelector(sel);
+    if (!el) return;
+    if (window.AppUtils && typeof window.AppUtils.animateValue === 'function') {
+      window.AppUtils.animateValue(el, balance);
+    } else {
+      el.textContent = Number(balance || 0).toLocaleString();
     }
   }
 }

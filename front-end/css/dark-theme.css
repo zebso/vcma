@@ -26,6 +26,16 @@
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
   --shadow-lg: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  /* ラジオボタン（ゲーム選択）用トークン */
+  --radio-bg: var(--bg-tertiary);
+  --radio-bg-active: #4a4a4a;
+  --radio-border: var(--border-light);
+  --radio-border-active: var(--primary-blue);
+  --radio-text: var(--text-primary);
+  --radio-text-active: var(--text-primary);
+  --radio-focus-ring: 0 0 0 3px rgba(74, 158, 255, 0.35);
+  --text-color: var(--text-primary);
 }
 
 /* ダークモード固有のスタイル */

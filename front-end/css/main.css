@@ -260,41 +260,66 @@ main {
     flex-wrap: wrap;
     gap: 6px;
     justify-content: center;
-    
-    .radio-item {
-      position: relative;
-      margin-top: 4px;
-      
-      input[type="radio"] {
-        display: none;
-        
-        &:checked + label {
-          background-color: #f8f9fa;
-          color: var(--text-color);
-          border-color: #007bff;
-        }
-      }
-      
-      label {
-        align-items: center;
-        justify-content: center;
-        padding: 2px 12px;
-        margin: 0;
-        border: 2px solid var(--border-color, #ddd);
-        border-radius: 16px;
-        background-color: var(--input-bg, #fff);
-        color: var(--text-color);
-        font-size: 14px;
-        text-align: center;
-        cursor: pointer;
-        user-select: none;
-        box-sizing: border-box;
-        
-        &:hover {
-          filter: brightness(95%);
-        }
-      }
-    }
+  }
+
+  .radio-group .radio-item {
+    position: relative;
+    margin-top: 4px;
+  }
+
+  .radio-group .radio-item input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+  }
+
+  .radio-group .radio-item label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px 14px;
+    margin: 0;
+    border: 2px solid var(--radio-border);
+    border-radius: 16px;
+    background: var(--radio-bg);
+    color: var(--radio-text);
+    font-size: 14px;
+    line-height: 1.2;
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
+    min-width: 72px;
+    font-weight: 500;
+    position: relative;
+    transition: background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease;
+  }
+
+  .radio-group .radio-item label:hover {
+    filter: brightness(96%);
+  }
+
+  .radio-group .radio-item label:active {
+    transform: translateY(1px);
+  }
+
+  .radio-group .radio-item input[type="radio"]:checked+label {
+    background: var(--radio-bg-active);
+    border-color: var(--radio-border-active);
+    color: var(--radio-text-active);
+    box-shadow: inset 0 0 0 1px var(--radio-border-active);
+  }
+
+  .radio-group .radio-item input[type="radio"]:focus-visible+label {
+    box-shadow: var(--radio-focus-ring);
+    outline: none;
+  }
+
+  .radio-group .radio-item input[type="radio"][disabled]+label {
+    opacity: .5;
+    cursor: not-allowed;
+    filter: none;
   }
 }
 
@@ -329,12 +354,24 @@ main {
   animation: fadeSlideIn 0.4s ease forwards 0.2s;
 }
 
-.balance-diff.positive { color: var(--success-text); }
-.balance-diff.negative { color: var(--error-text); }
+.balance-diff.positive {
+  color: var(--success-text);
+}
+
+.balance-diff.negative {
+  color: var(--error-text);
+}
 
 @keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* 成功ポップアップ */
@@ -347,12 +384,13 @@ main {
   color: var(--success-text);
   padding: 16px 52px 16px 20px;
   border-radius: 12px;
-  box-shadow: 0 10px 28px -6px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.3);
   max-width: 360px;
   line-height: 1.4;
   font-size: 14px;
-  animation: popupIn .35s cubic-bezier(.4,.8,.4,1);
+  animation: popupIn .35s cubic-bezier(.4, .8, .4, 1);
 }
+
 .balance-popup .close-popup {
   position: absolute;
   top: 6px;
@@ -366,23 +404,51 @@ main {
   line-height: 1;
   border-radius: 4px;
 }
-.balance-popup .close-popup:hover { background: rgba(255,255,255,0.12); }
-.balance-popup strong { display:block; font-size:15px; margin-bottom:4px; }
-.balance-popup p { margin:0; font-size:13px; }
+
+.balance-popup .close-popup:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.balance-popup strong {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.balance-popup p {
+  margin: 0;
+  font-size: 13px;
+}
 
 @keyframes popupIn {
-  0% { opacity:0; transform: translateY(-8px) scale(.96); }
-  60% { opacity:1; transform: translateY(2px) scale(1.01); }
-  100% { opacity:1; transform: translateY(0) scale(1); }
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(.96);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(2px) scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @media (max-width: 640px) {
-  .balance-popup { left:12px; right:12px; top:12px; max-width:none; }
+  .balance-popup {
+    left: 12px;
+    right: 12px;
+    top: 12px;
+    max-width: none;
+  }
 }
 
 /* メッセージエリアのスタイル */
 #update-message-area {
-    margin-top: 16px;
+  margin-top: 16px;
 }
 
 /*ボタンスタイル*/
@@ -396,24 +462,12 @@ button svg {
   color: var(--bg-primary);
   background: var(--primary-green);
   box-shadow: 0 4px #046043;
-
-  &:active {
-    position: relative;
-    top: 4px;
-    box-shadow: none;
-  }
 }
 
 .subtract-btn {
   color: var(--bg-primary);
   background: var(--primary-red);
   box-shadow: 0 4px #8f2a2a;
-
-  &:active {
-    position: relative;
-    top: 4px;
-    box-shadow: none;
-  }
 }
 
 /*残高確認ボタン*/
@@ -423,12 +477,6 @@ button svg {
   color: var(--bg-primary);
   background: var(--primary-blue);
   box-shadow: 0 4px #075aa3;
-
-  &:active {
-    position: relative;
-    top: 4px;
-    box-shadow: none;
-  }
 }
 
 .scan-qr-btn {
@@ -436,12 +484,16 @@ button svg {
   background: var(--primary-purple);
   box-shadow: 0 4px #6b2f9a;
   width: 100%;
+}
 
-  &:active {
-    position: relative;
-    top: 4px;
-    box-shadow: none;
-  }
+/* 共通押下状態（重複削減統合） */
+.add-btn:active,
+.subtract-btn:active,
+.check-balance-btn:active,
+.scan-qr-btn:active {
+  position: relative;
+  top: 4px;
+  box-shadow: none;
 }
 
 

@@ -45,7 +45,7 @@
   accent-color: var(--primary-blue);
 }
 
-.theme-options input[type="radio"]:checked + span {
+.theme-options input[type="radio"]:checked+span {
   color: var(--primary-blue);
   font-weight: 600;
 }
@@ -55,7 +55,7 @@
   .theme-options {
     flex-direction: column;
   }
-  
+
   .theme-options label {
     min-width: auto;
   }

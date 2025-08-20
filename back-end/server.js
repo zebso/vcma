@@ -1,3 +1,4 @@
+"use strict";
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -23,17 +24,13 @@ const loadJSON = (file) => {
 };
 const saveJSON = (file, data) => fs.writeFileSync(file, JSON.stringify(data, null, 2));
 
-// ランキング更新: 対象ユーザーを差し替え後、残高降順で保存
-const updateRanking = (user) => {
+// ランキング更新: users.json から都度再構築（シンプル & 一貫性）
+const updateRanking = () => {
   try {
-    let ranking = loadJSON(rankingFile);
-    if (!Array.isArray(ranking)) ranking = [];
-    // 同一IDを削除
-    ranking = ranking.filter(r => r.id !== user.id);
-    // 追加
-    ranking.push({ id: user.id, balance: user.balance });
-    // 並び替え（降順）
-    ranking.sort((a, b) => b.balance - a.balance);
+    const users = loadJSON(usersFile);
+    const ranking = users
+      .map(u => ({ id: u.id, balance: Number(u.balance || 0) }))
+      .sort((a, b) => b.balance - a.balance);
     saveJSON(rankingFile, ranking);
   } catch (e) {
     console.error('ランキング更新エラー:', e);
@@ -48,61 +45,45 @@ app.get('/api/balance/:id', (req, res) => {
   res.json({ id: user.id, balance: user.balance})
 });
 
-// 入金API
-app.post('/api/add', (req, res) => {
-  const { id, amount, games, dealer } = req.body;
-  const users = loadJSON(usersFile);
-  const history = loadJSON(historyFile);
+// 共通トランザクション処理
+function createTransactionHandler(type, sign) {
+  return (req, res) => {
+    const { id, amount, games, dealer } = req.body || {};
+    const num = Number(amount);
 
-  const user = users.find(u => u.id === id);
-  if (!user) return res.status(404).json({ error: 'ID not found' });
+    // 最低限のバリデーション（フロントと挙動変えない: エラー時 success:false ではなく既存通りエラーレスポンス）
+    if (!id || isNaN(num) || num <= 0) {
+      return res.status(400).json({ error: 'invalid request' });
+    }
 
-  user.balance += Number(amount);
+    const users = loadJSON(usersFile);
+    const history = loadJSON(historyFile);
+    const user = users.find(u => u.id === id);
+    if (!user) return res.status(404).json({ error: 'ID not found' });
 
-  history.unshift({
-    timestamp: new Date().toISOString(),
-    id,
-    games,
-    type: 'add',
-    amount: Number(amount),
-    balance: user.balance,
-    dealer
-  });
+    user.balance += sign * num; // 加算 or 減算
 
-  saveJSON(usersFile, users);
-  saveJSON(historyFile, history);
-  updateRanking(user);
+    history.unshift({
+      timestamp: new Date().toISOString(),
+      id,
+      games,
+      type,
+      amount: sign * num, // subtract の場合は負数
+      balance: user.balance,
+      dealer
+    });
 
-  res.json({ success: true, balance: user.balance });
-});
+    saveJSON(usersFile, users);
+    saveJSON(historyFile, history);
+    updateRanking();
 
-// 出金API
-app.post('/api/subtract', (req, res) => {
-  const { id, amount, games, dealer } = req.body;
-  const users = loadJSON(usersFile);
-  const history = loadJSON(historyFile);
+    res.json({ success: true, balance: user.balance });
+  };
+}
 
-  const user = users.find(u => u.id === id);
-  if (!user) return res.status(404).json({ error: 'ID not found' });
-
-  user.balance -= Number(amount);
-
-  history.unshift({
-    timestamp: new Date().toISOString(),
-    id,
-    games,
-    type: 'subtract',
-    amount: -Number(amount),
-    balance: user.balance,
-    dealer
-  });
-
-  saveJSON(usersFile, users);
-  saveJSON(historyFile, history);
-  updateRanking(user);
-
-  res.json({ success: true, balance: user.balance });
-});
+// 入金API / 出金API （挙動・レスポンス互換）
+app.post('/api/add', createTransactionHandler('add', +1));
+app.post('/api/subtract', createTransactionHandler('subtract', -1));
 
 // 履歴取得API
 app.get('/api/history', (req, res) => {
@@ -115,22 +96,15 @@ app.get('/api/ranking', (req, res) => {
   res.json(ranking);
 });
 
-// ダッシュボード統計API
+// ダッシュボード統計API（必要最小限の値のみ返却）
 app.get('/api/dashboard-stats', (req, res) => {
   try {
     const users = loadJSON(usersFile);
     const history = loadJSON(historyFile);
-    const activeIds = users.length;
-    const totalBalance = users.reduce((sum, u) => sum + Number(u.balance || 0), 0);
-    const totalTransactions = history.length; // 全期間
-    // 今日の日付判定 (JST基準にするなら調整) 現在はUTC日付
-    const todayStr = new Date().toISOString().slice(0,10);
-    const todaysTransactions = history.filter(h => (h.timestamp||'').startsWith(todayStr)).length;
     res.json({
-      activeIds,
-      totalBalance,
-      totalTransactions,
-      todaysTransactions
+      activeIds: users.length,
+      totalBalance: users.reduce((sum, u) => sum + Number(u.balance || 0), 0),
+      totalTransactions: history.length
     });
   } catch (e) {
     res.status(500).json({ error: 'Failed to compute stats' });

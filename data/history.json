@@ -1,5 +1,86 @@
 [
   {
+    "timestamp": "2025-08-20T14:00:12.360Z",
+    "id": "CC-2025-2FJJKE",
+    "games": "poker",
+    "type": "add",
+    "amount": 100,
+    "balance": 9550,
+    "dealer": "dealer1"
+  },
+  {
+    "timestamp": "2025-08-20T13:49:48.334Z",
+    "id": "CC-2025-2FJJKE",
+    "games": "poker",
+    "type": "add",
+    "amount": 100,
+    "balance": 9450,
+    "dealer": "dealer1"
+  },
+  {
+    "timestamp": "2025-08-20T13:45:08.548Z",
+    "id": "CC-2025-2FJJKE",
+    "games": "poker",
+    "type": "subtract",
+    "amount": -100,
+    "balance": 9350,
+    "dealer": "dealer1"
+  },
+  {
+    "timestamp": "2025-08-20T13:38:54.753Z",
+    "id": "CC-2025-2FJJKE",
+    "games": "baccarat",
+    "type": "add",
+    "amount": 100,
+    "balance": 9450,
+    "dealer": "dealer1"
+  },
+  {
+    "timestamp": "2025-08-20T13:35:55.881Z",
+    "id": "CC-2025-2FJJKE",
+    "games": "poker",
+    "type": "subtract",
+    "amount": -100,
+    "balance": 9350,
+    "dealer": "dealer1"
+  },
+  {
+    "timestamp": "2025-08-20T13:24:22.713Z",
+    "id": "CC-2025-2FJJKE",
+    "games": "roulette",
+    "type": "add",
+    "amount": 100,
+    "balance": 9450,
+    "dealer": "dealer1"
+  },
+  {
+    "timestamp": "2025-08-20T13:19:57.325Z",
+    "id": "CC-2025-2FJJKE",
+    "games": "baccarat",
+    "type": "subtract",
+    "amount": -1000,
+    "balance": 9350,
+    "dealer": "dealer1"
+  },
+  {
+    "timestamp": "2025-08-20T13:17:10.818Z",
+    "id": "CC-2025-2FJJKE",
+    "games": "baccarat",
+    "type": "subtract",
+    "amount": -100,
+    "balance": 10350,
+    "dealer": "dealer1"
+  },
+  {
+    "timestamp": "2025-08-20T13:10:36.746Z",
+    "id": "CC-2025-2FJJKE",
+    "games": "blackjack",
+    "type": "subtract",
+    "amount": -1000,
+    "balance": 10450,
+    "dealer": "dealer1"
+  },
+  {
     "timestamp": "2025-08-20T13:04:39.302Z",
     "id": "CC-2025-2FJJKE",
     "games": "baccarat",
