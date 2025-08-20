@@ -55,6 +55,23 @@
           </label>
         </div>
       </section>
+      <section class="user-add-panel">
+        <h2>ユーザー追加</h2>
+        <form id="userAddForm" autocomplete="off">
+          <div class="field-row">
+            <label for="newUserId">ユーザーID (任意。未入力なら自動生成)</label>
+            <input id="newUserId" name="id" type="text" placeholder="例: CC-2025-XXXXX" maxlength="32">
+          </div>
+          <div class="field-row">
+            <label for="newUserBalance">初期残高</label>
+            <input id="newUserBalance" name="balance" type="number" step="1" min="0" value="0">
+          </div>
+          <div class="actions">
+            <button type="submit" id="createUserBtn" disabled>追加</button>
+          </div>
+          <div id="userAddMessage" class="inline-message" aria-live="polite"></div>
+        </form>
+      </section>
     </main>
   </div>
 
@@ -100,6 +117,7 @@
   <script src="js/common.js"></script>
   <script src="js/slideIn.js"></script>
   <script src="js/theme.js"></script>
+  <script src="js/userAdder.js"></script>
 </body>
 
 </html>

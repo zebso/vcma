@@ -602,7 +602,7 @@ button svg {
       }
 
       /* 2位 (左) */
-      &:nth-child(1) {
+      &#ranking-second {
         flex: 0 1 200px;
         margin-top: 40px;
         border-color: #c0c0c0;
@@ -627,7 +627,7 @@ button svg {
       }
 
       /* 1位 (中央) */
-      &:nth-child(2) {
+      &#ranking-first {
         flex: 0 1 240px;
         border-color: #ffd700;
         box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
@@ -660,7 +660,7 @@ button svg {
       }
 
       /* 3位 (右) */
-      &:nth-child(3) {
+      &#ranking-third {
         flex: 0 1 180px;
         align-self: flex-end;
         margin-top: 60px;
@@ -853,6 +853,21 @@ button svg {
             .generate {
               background: var(--info-bg);
               color: var(--info-text);
+            }
+            /* 新規ユーザー生成: info 系と成功色の中間トーンで統一感 */
+            .generate-new {
+              background: var(--info-bg);
+              color: var(--info-text);
+              position: relative;
+            }
+            .generate-new::after { /* subtle accent bar */
+              content: '';
+              position: absolute;
+              inset: 0;
+              border-radius: 16px;
+              background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12));
+              pointer-events: none;
+              mix-blend-mode: overlay;
             }
 
             .subtract {

@@ -94,6 +94,7 @@
       slideIn.js                    # スライドイン UI 効果
       tabControl.js                 # タブ切替制御
       theme.js                      # テーマ初期化/切替
+  userAdder.js                  # ユーザー追加フォーム制御
     svg/                            # アイコン
       add_circle.svg
       close.svg
@@ -152,6 +153,7 @@
 | GET | /api/history | 取引履歴一覧 |
 | GET | /api/ranking | 残高ランキング |
 | GET | /api/dashboard-stats | 統計 (activeIds,totalBalance,totalTransactions) |
+| POST | /api/users | ユーザー追加 (ID 任意 / 自動生成) |
 
 ---
 

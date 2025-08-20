@@ -24,6 +24,13 @@ const loadJSON = (file) => {
 };
 const saveJSON = (file, data) => fs.writeFileSync(file, JSON.stringify(data, null, 2));
 
+// ユーザーID自動生成 (重複回避は呼出側で再試行)
+const generateUserId = () => {
+  const year = new Date().getFullYear();
+  const rand = Math.random().toString(36).toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
+  return `CC-${year}-${rand}`;
+};
+
 // ランキング更新: users.json から都度再構築（シンプル & 一貫性）
 const updateRanking = () => {
   try {
@@ -94,6 +101,47 @@ app.get('/api/history', (req, res) => {
 app.get('/api/ranking', (req, res) => {
   const ranking = loadJSON(rankingFile);
   res.json(ranking);
+});
+
+// ユーザー追加 API
+// Body: { id?:string, balance?:number }
+// id 未指定時はサーバ側で自動生成 (重複回避ループ)
+app.post('/api/users', (req, res) => {
+  try {
+  const { id, balance } = req.body || {};
+  const users = loadJSON(usersFile);
+  const history = loadJSON(historyFile);
+    let newId = (id || '').trim();
+    if (newId) {
+      if (users.some(u => u.id === newId)) {
+        return res.status(409).json({ error: 'id exists' });
+      }
+    } else {
+      // 重複しない ID を生成
+      do { newId = generateUserId(); } while (users.some(u => u.id === newId));
+    }
+    let bal = Number(balance);
+    if (isNaN(bal) || bal < 0) bal = 0;
+    bal = Math.floor(bal);
+    const user = { id: newId, balance: bal, createdAt: new Date().toISOString() };
+    users.push(user);
+    saveJSON(usersFile, users);
+    // 生成イベントを履歴に追加 (type: generate, amount = 初期残高, dealer/games は空)
+    history.unshift({
+      timestamp: new Date().toISOString(),
+      id: user.id,
+      games: '',
+      type: 'generate',
+      amount: user.balance,
+      balance: user.balance,
+      dealer: ''
+    });
+    saveJSON(historyFile, history);
+    updateRanking();
+    res.json({ success: true, user });
+  } catch (e) {
+    res.status(500).json({ error: 'failed to create user' });
+  }
 });
 
 // ダッシュボード統計API（必要最小限の値のみ返却）

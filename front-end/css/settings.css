@@ -50,6 +50,47 @@
   font-weight: 600;
 }
 
+/* ユーザー追加パネル */
+.user-add-panel {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 24px;
+  margin: 20px 0;
+  box-shadow: var(--shadow-lg);
+}
+.user-add-panel h2 { margin:0 0 16px; font-size:1.2rem; font-weight:600; }
+.user-add-panel form { display:flex; flex-direction:column; gap:16px; }
+.user-add-panel .field-row { display:flex; flex-direction:column; gap:6px; }
+.user-add-panel label { font-weight:500; }
+.user-add-panel input[type="text"],
+.user-add-panel input[type="number"] {
+  padding:10px 12px;
+  border:1px solid var(--border-color);
+  border-radius:6px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font: inherit;
+}
+.user-add-panel input:focus { outline:2px solid var(--primary-blue); outline-offset:2px; }
+.user-add-panel .actions { display:flex; justify-content:flex-end; }
+.user-add-panel button[type="submit"] {
+  background: var(--primary-blue);
+  color:#fff;
+  border:none;
+  padding:10px 20px;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:600;
+  transition: background .25s;
+}
+.user-add-panel button[type="submit"]:hover:not(:disabled) { background: var(--primary-blue-hover, #0a6fc2); }
+.user-add-panel button[type="submit"]:disabled { opacity:.5; cursor:not-allowed; }
+.inline-message { font-size:.85rem; }
+.inline-message.success { color: var(--success-text, #0a8f3a); }
+.inline-message.error { color: var(--error-text, #d93025); }
+.inline-message.info { color: var(--info-text, var(--text-secondary)); }
+
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
   .theme-options {
@@ -59,4 +100,5 @@
   .theme-options label {
     min-width: auto;
   }
+  .user-add-panel { padding:20px; }
 }

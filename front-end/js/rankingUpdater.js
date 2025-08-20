@@ -18,9 +18,10 @@
   function formatBalance(v) { return window.AppUtils ? window.AppUtils.formatCurrency(v, { style: 'usd' }) : ('$' + Number(v).toLocaleString()); }
 
   // Top3 用カード生成
-  function createTopCard(entry) {
+  function createTopCard(entry, rank) {
     const div = document.createElement('div');
     div.className = 'ranking-content';
+    div.id = `ranking-${rank}`;
     div.innerHTML = `
 			<p class="user-id">${entry.id}</p>
 			<h3 class="point">${formatBalance(entry.balance)}</h3>
@@ -44,7 +45,7 @@
     return div;
   }
 
-  // DOM 更新（ページ別件数制限: dashboard=5, ranking=18）
+  // DOM 更新（ページ別件数制限: dashboard=6, ranking=18）
   function render(ranking) {
     const { top, bottom } = selectContainers();
     if (!top || !bottom) return;
@@ -56,7 +57,7 @@
     bottom.innerHTML = '';
 
     const arranged = (window.AppUtils && window.AppUtils.arrangeTop3) ? window.AppUtils.arrangeTop3(limited) : limited.slice(0, 3);
-    arranged.forEach(entry => top.appendChild(createTopCard(entry)));
+    arranged.forEach((entry, i) => top.appendChild(createTopCard(entry, i === 0 ? 'first' : i === 1 ? 'second' : 'third')));
 
     for (let i = 3; i < limited.length; i++) bottom.appendChild(createRow(limited[i], i + 1));
   }

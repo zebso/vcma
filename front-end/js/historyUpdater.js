@@ -69,7 +69,8 @@
 
   function buildRow(item) {
     const tr = document.createElement('tr');
-    const typeClass = typeToClass(item.type);
+    let typeClass = typeToClass(item.type);
+    if (item.type === 'generate') typeClass = 'generate-new';
     const amountFormatted = window.AppUtils ? window.AppUtils.formatCurrency(item.amount, { style: 'usd' }) : formatCurrency(item.amount);
     const balanceFormatted = window.AppUtils ? window.AppUtils.formatCurrency(item.balance, { style: 'usd' }) : formatCurrency(item.balance);
     tr.innerHTML = `
@@ -97,7 +98,7 @@
     switch (type) {
       case 'add': return '＋ 入金';
       case 'subtract': return 'ー 出金';
-      case 'generate': return '＋ 生成';
+      case 'generate': return '＊ 新規';
       default: return type || '不明';
     }
   }
