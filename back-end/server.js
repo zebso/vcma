@@ -27,7 +27,7 @@ const saveJSON = (file, data) => fs.writeFileSync(file, JSON.stringify(data, nul
 // ユーザーID自動生成 (重複回避は呼出側で再試行)
 const generateUserId = () => {
   const year = new Date().getFullYear();
-  const rand = Math.random().toString(36).toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
+  const rand = Math.random().toString(36).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
   return `CC-${year}-${rand}`;
 };
 
@@ -49,11 +49,11 @@ app.get('/api/balance/:id', (req, res) => {
   const users = loadJSON(usersFile);
   const user = users.find(u => u.id === req.params.id);
   if (!user) return res.status(404).json({ error: 'ID not found' });
-  res.json({ id: user.id, balance: user.balance})
+  res.json({ id: user.id, balance: user.balance })
 });
 
 // 共通トランザクション処理
-function createTransactionHandler(type, sign) {
+const createTransactionHandler = (type, sign) => {
   return (req, res) => {
     const { id, amount, games, dealer } = req.body || {};
     const num = Number(amount);
@@ -108,9 +108,9 @@ app.get('/api/ranking', (req, res) => {
 // id 未指定時はサーバ側で自動生成 (重複回避ループ)
 app.post('/api/users', (req, res) => {
   try {
-  const { id, balance } = req.body || {};
-  const users = loadJSON(usersFile);
-  const history = loadJSON(historyFile);
+    const { id, balance } = req.body || {};
+    const users = loadJSON(usersFile);
+    const history = loadJSON(historyFile);
     let newId = (id || '').trim();
     if (newId) {
       if (users.some(u => u.id === newId)) {

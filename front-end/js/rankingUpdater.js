@@ -15,7 +15,7 @@
   }
 
   // 数値 → 通貨表示
-  function formatBalance(v) { return window.AppUtils ? window.AppUtils.formatCurrency(v, { style: 'usd' }) : ('$' + Number(v).toLocaleString()); }
+  function formatBalance(v) { return window.AppUtils ? window.AppUtils.formatCurrency(v) : ('$' + Number(v).toLocaleString()); }
 
   // Top3 用カード生成
   function createTopCard(entry, rank) {

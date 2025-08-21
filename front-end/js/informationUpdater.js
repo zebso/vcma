@@ -7,7 +7,7 @@
   function updateDOM(stats) {
     const map = [
       ['#active-ids h2', Number(stats.activeIds || 0).toLocaleString()],
-      ['#total-balance h2', window.AppUtils ? window.AppUtils.formatCurrency(stats.totalBalance, { style: 'jpy' }) : ('￥' + Number(stats.totalBalance || 0).toLocaleString())],
+  ['#total-balance h2', window.AppUtils ? window.AppUtils.formatCurrency(stats.totalBalance, { style: 'usd' }) : ('$' + Number(stats.totalBalance || 0).toLocaleString())],
       ['#todays-transactions h2', Number(stats.totalTransactions || 0).toLocaleString()]
     ];
     map.forEach(([sel, val]) => {

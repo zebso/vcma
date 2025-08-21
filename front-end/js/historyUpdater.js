@@ -71,8 +71,8 @@
     const tr = document.createElement('tr');
     let typeClass = typeToClass(item.type);
     if (item.type === 'generate') typeClass = 'generate-new';
-    const amountFormatted = window.AppUtils ? window.AppUtils.formatCurrency(item.amount, { style: 'usd' }) : formatCurrency(item.amount);
-    const balanceFormatted = window.AppUtils ? window.AppUtils.formatCurrency(item.balance, { style: 'usd' }) : formatCurrency(item.balance);
+  const amountFormatted = window.AppUtils ? window.AppUtils.formatCurrency(item.amount) : formatCurrency(item.amount);
+  const balanceFormatted = window.AppUtils ? window.AppUtils.formatCurrency(item.balance) : formatCurrency(item.balance);
     tr.innerHTML = `
 			<td>${escapeHtml(formatTimestamp(item.timestamp))}</td>
 			<td>${escapeHtml(item.id || '')}</td>

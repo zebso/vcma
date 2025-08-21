@@ -40,13 +40,12 @@
     return res.json();
   }
 
-  // 通貨フォーマット（USD / JPY）
-  function formatCurrency(value, { style = 'usd', sign = true } = {}) {
+  // 通貨フォーマット（常に USD $ に統一）
+  function formatCurrency(value, { sign = true } = {}) {
     const num = Number(value) || 0;
     const abs = Math.abs(num).toLocaleString();
-    const prefix = style === 'jpy' ? '￥' : '$';
     const signStr = num < 0 && sign ? '-' : '';
-    return `${signStr}${prefix}${abs}`;
+    return `${signStr}$${abs}`;
   }
 
   // 日時フォーマット統一

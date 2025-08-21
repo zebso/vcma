@@ -131,7 +131,7 @@ http://localhost:3000/dashboard.html を開く（サーバー起動時にコン�
 |------|------|
 | fetchJSON | no-cache 取得 (timestamp 付与) |
 | animateValue | 数値アニメ (duration, easing) |
-| formatCurrency / formatDateTime | 表示整形 |
+| formatCurrency / formatDateTime | 通貨($固定) / 日時表示整形 |
 | updateBalanceButtons | 入力状態から Add/Subtract 有効化管理 |
 | showPopup / showBalanceUpdatePopup | ポップアップ表示 (多重抑止) |
 | showInlineMessage / clearInlineMessage | インライン通知 |
