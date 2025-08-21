@@ -1,5 +1,5 @@
 // テーマ管理システム（最適化版）
-(function () {
+(() => {
   'use strict';
   if (window.ThemeManager) return; // 多重初期化ガード
 
@@ -8,19 +8,19 @@
   let linkEl = null;
   let initialized = false;
 
-  function normalizeTheme(t) {
+  const normalizeTheme = t => {
     return THEMES.includes(t) ? t : 'light';
-  }
+  };
 
-  function getPreferredTheme() {
+  const getPreferredTheme = () => {
     const stored = localStorage.getItem(THEME_KEY);
     if (stored) return normalizeTheme(stored);
     // 保存なし → システム設定参照
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
     return 'light';
-  }
+  };
 
-  function ensureLink(theme) {
+  const ensureLink = theme => {
     if (linkEl && !document.head.contains(linkEl)) linkEl = null; // 手動削除対策
     if (!linkEl) {
       linkEl = document.createElement('link');
@@ -34,9 +34,9 @@
       linkEl.setAttribute('href', href);
     }
     linkEl.dataset.theme = theme;
-  }
+  };
 
-  function applyThemeClass(theme) {
+  const applyThemeClass = theme => {
     // body がまだ存在しない場合は DOMContentLoaded 後に再実行
     const target = document.body;
     if (!target) {
@@ -44,22 +44,22 @@
       return;
     }
     if (theme === 'dark') target.classList.add('dark-mode'); else target.classList.remove('dark-mode');
-  }
+  };
 
-  function loadTheme(theme) {
+  const loadTheme = theme => {
     const t = normalizeTheme(theme);
     ensureLink(t);
     applyThemeClass(t);
     return t;
-  }
+  };
 
-  function setTheme(theme) {
+  const setTheme = theme => {
     const t = loadTheme(theme);
     localStorage.setItem(THEME_KEY, t);
     return t;
-  }
+  };
 
-  function initOnce() {
+  const initOnce = () => {
     if (initialized) return;
     initialized = true;
     const t = getPreferredTheme();
@@ -74,9 +74,9 @@
     prefetch.crossOrigin = 'anonymous';
     prefetch.dataset.prefetch = 'theme';
     document.head.appendChild(prefetch);
-  }
+  };
 
-  function initSettingsPage() {
+  const initSettingsPage = () => {
     const inputs = document.querySelectorAll('input[name="theme"]');
     if (!inputs.length) return;
     const current = getCurrentTheme();
@@ -85,11 +85,11 @@
     inputs.forEach(r => r.addEventListener('change', function () {
       if (this.checked) setTheme(this.value);
     }));
-  }
+  };
 
-  function getCurrentTheme() {
+  const getCurrentTheme = () => {
     return normalizeTheme((linkEl && linkEl.dataset.theme) || localStorage.getItem(THEME_KEY) || getPreferredTheme());
-  }
+  };
 
   // 初期化実行
   initOnce();

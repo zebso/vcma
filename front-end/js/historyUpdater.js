@@ -1,9 +1,9 @@
 // 取引履歴自動更新スクリプト
-// /api/history を一定間隔で取得し、テーブル tbody を最新状態に更新します。
+// /api/history を一定間隔で取得し、テーブル tbody を最新状態に更新。
 // サーバ側: server.js の /api/history が history.json をそのまま返す仕様。
 // history.json 要素例: { timestamp, id, games, type: 'add'|'subtract'|'generate' 等, amount, balance, dealer }
 
-(function () {
+(() => {
   'use strict';
 
   // ===== 設定 =====
@@ -16,23 +16,19 @@
   let lastHash = null; // 内容変化判定用ハッシュ
   let fetching = false;
 
-  document.addEventListener('DOMContentLoaded', () => {
-    start();
-  });
-
-  function start() {
+  const start = () => {
     if (timerId) return;
     fetchAndRender();
     timerId = setInterval(fetchAndRender, POLL_INTERVAL_MS);
-  }
+  };
 
-  function stop() {
+  const stop = () => {
     if (!timerId) return;
     clearInterval(timerId);
     timerId = null;
-  }
+  };
 
-  async function fetchAndRender() {
+  const fetchAndRender = async () => {
     if (fetching) return; // 多重実行防止
     fetching = true;
 
@@ -61,18 +57,20 @@
       const frag = document.createDocumentFragment();
       for (const item of limited) frag.appendChild(buildRow(item));
       tbody.replaceChildren(frag);
-    } catch (err) { if (window.AppUtils && window.AppUtils.handleApiError) window.AppUtils.handleApiError(err, 'history'); else console.error('[historyUpdater] フェッチエラー', err); } finally {
+    } catch (err) {
+      if (window.AppUtils && window.AppUtils.handleApiError) window.AppUtils.handleApiError(err, 'history'); else console.error('[historyUpdater] フェッチエラー', err);
+    } finally {
       tbody.classList.remove(LOADING_CLASS);
       fetching = false;
     }
-  }
+  };
 
-  function buildRow(item) {
+  const buildRow = (item) => {
     const tr = document.createElement('tr');
     let typeClass = typeToClass(item.type);
     if (item.type === 'generate') typeClass = 'generate-new';
-  const amountFormatted = window.AppUtils ? window.AppUtils.formatCurrency(item.amount) : formatCurrency(item.amount);
-  const balanceFormatted = window.AppUtils ? window.AppUtils.formatCurrency(item.balance) : formatCurrency(item.balance);
+    const amountFormatted = window.AppUtils ? window.AppUtils.formatCurrency(item.amount) : formatCurrency(item.amount);
+    const balanceFormatted = window.AppUtils ? window.AppUtils.formatCurrency(item.balance) : formatCurrency(item.balance);
     tr.innerHTML = `
 			<td>${escapeHtml(formatTimestamp(item.timestamp))}</td>
 			<td>${escapeHtml(item.id || '')}</td>
@@ -83,50 +81,52 @@
 			<td>${escapeHtml(item.dealer || '')}</td>
 		`.trim();
     return tr;
-  }
+  };
 
-  function typeToClass(type) {
+  const typeToClass = (type) => {
     switch (type) {
       case 'add': return 'add';
       case 'subtract': return 'subtract';
       case 'generate': return 'generate';
       default: return 'unknown';
     }
-  }
+  };
 
-  function typeLabel(type) {
+  const typeLabel = (type) => {
     switch (type) {
       case 'add': return '＋ 入金';
       case 'subtract': return 'ー 出金';
       case 'generate': return '＊ 新規';
       default: return type || '不明';
     }
-  }
+  };
 
-  function formatTimestamp(ts) { return window.AppUtils ? window.AppUtils.formatDateTime(ts) : ts; }
+  const formatTimestamp = (ts) => (window.AppUtils ? window.AppUtils.formatDateTime(ts) : ts);
 
-  function formatCurrency(v) {
+  const formatCurrency = (v) => {
     if (v === undefined || v === null || v === '') return '';
     const num = Number(v);
     if (isNaN(num)) return String(v);
     const sign = num < 0 ? '-' : '';
     return `${sign}$${Math.abs(num).toLocaleString()}`;
-  }
+  };
 
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
+  const escapeHtml = (str) => String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 
-  function simpleHash(str) {
+  const simpleHash = (str) => {
     let h = 0, i = 0, len = str.length;
     while (i < len) h = (h << 5) - h + str.charCodeAt(i++) | 0; // 32bit
     return h.toString();
-  }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    start();
+  });
 
   // 外部制御用 (必要なら)
   window.historyUpdater = { start, stop, refresh: fetchAndRender };

@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const gameRadios = document.querySelectorAll('input[name="game-type"]');
 
   // ボタンの有効化/無効化を制御する関数
-  function updateButtonStates() { if (window.AppUtils) window.AppUtils.updateBalanceButtons(); }
+  const updateButtonStates = () => { if (window.AppUtils) window.AppUtils.updateBalanceButtons(); };
 
   // 初期状態でボタンを無効化
   updateButtonStates();

@@ -1,24 +1,24 @@
 // ランキング自動更新スクリプト
-// 期待する ranking.json 形式: [{ id: "USER_ID", balance: 12345 }, ...] 降順
+// ranking.json 形式: [{ id: "USER_ID", balance: 12345 }, ...] 降順
 
-(function () {
+(() => {
   const RANKING_URL = '/api/ranking';
   const POLL_INTERVAL = (window.AppUtils && window.AppUtils.POLL_INTERVALS.ranking) || 8000; // ms
 
   // DOM 参照取得（存在しない場合は動かさない）
-  function selectContainers() {
+  const selectContainers = () => {
     const sel = (window.AppUtils && window.AppUtils.selectors) || {};
     return {
       top: document.querySelector(sel.rankingTop || '.ranking-top-contents'),
       bottom: document.querySelector(sel.rankingBottom || '.ranking-bottom-contents')
     };
-  }
+  };
 
   // 数値 → 通貨表示
-  function formatBalance(v) { return window.AppUtils ? window.AppUtils.formatCurrency(v) : ('$' + Number(v).toLocaleString()); }
+  const formatBalance = v => (window.AppUtils ? window.AppUtils.formatCurrency(v) : ('$' + Number(v).toLocaleString()));
 
   // Top3 用カード生成
-  function createTopCard(entry, rank) {
+  const createTopCard = (entry, rank) => {
     const div = document.createElement('div');
     div.className = 'ranking-content';
     div.id = `ranking-${rank}`;
@@ -27,10 +27,10 @@
 			<h3 class="point">${formatBalance(entry.balance)}</h3>
 		`;
     return div;
-  }
+  };
 
   // 4位以下行生成（rankNumber を直接指定）
-  function createRow(entry, rankNumber) {
+  const createRow = (entry, rankNumber) => {
     const div = document.createElement('div');
     div.className = 'ranking-content';
     div.innerHTML = `
@@ -43,10 +43,10 @@
 			<div class="point">${formatBalance(entry.balance)}</div>
 		`;
     return div;
-  }
+  };
 
   // DOM 更新（ページ別件数制限: dashboard=6, ranking=18）
-  function render(ranking) {
+  const render = ranking => {
     const { top, bottom } = selectContainers();
     if (!top || !bottom) return;
     const isRankingPage = /ranking\.html$/i.test(location.pathname);
@@ -60,12 +60,12 @@
     arranged.forEach((entry, i) => top.appendChild(createTopCard(entry, i === 0 ? 'first' : i === 1 ? 'second' : 'third')));
 
     for (let i = 3; i < limited.length; i++) bottom.appendChild(createRow(limited[i], i + 1));
-  }
+  };
 
   let lastSerialized = '';
   let timerId = null;
 
-  async function fetchAndUpdate() {
+  const fetchAndUpdate = async () => {
     try {
       const data = window.AppUtils ? await window.AppUtils.fetchJSON(RANKING_URL) : await (await fetch(RANKING_URL, { cache: 'no-store' })).json();
       if (!Array.isArray(data)) return;
@@ -77,14 +77,14 @@
     } catch (e) {
       if (window.AppUtils && window.AppUtils.handleApiError) window.AppUtils.handleApiError(e, 'ranking'); else console.debug('Ranking fetch error', e);
     }
-  }
+  };
 
-  function start() {
+  const start = () => {
     // 初回即時
     fetchAndUpdate();
     // ポーリング
     timerId = setInterval(fetchAndUpdate, POLL_INTERVAL);
-  }
+  };
 
   // ページ遷移等で複数回動かないようガード
   if (!window.__rankingUpdaterStarted) {
