@@ -1,5 +1,32 @@
 [
   {
+    "timestamp": "2025-08-21T00:54:57.554Z",
+    "id": "CC-2025-06VE8T",
+    "games": "",
+    "type": "generate",
+    "amount": 100,
+    "balance": 100,
+    "dealer": ""
+  },
+  {
+    "timestamp": "2025-08-21T00:54:56.773Z",
+    "id": "CC-2025-0HKMU7",
+    "games": "",
+    "type": "generate",
+    "amount": 100,
+    "balance": 100,
+    "dealer": ""
+  },
+  {
+    "timestamp": "2025-08-21T00:54:55.864Z",
+    "id": "CC-2025-0PGFTQ",
+    "games": "",
+    "type": "generate",
+    "amount": 100,
+    "balance": 100,
+    "dealer": ""
+  },
+  {
     "timestamp": "2025-08-21T00:25:55.123Z",
     "id": "CC-2025-087AZR",
     "games": "blackjack",

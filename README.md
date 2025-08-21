@@ -4,6 +4,8 @@
 
 ## 実行方法
 
+Node.js（npm）が未インストールなら先にインストールする。
+
 ```jsonc
 cd back-end  （またはback-endでターミナルを開く）
 npm run dev  （これでサーバー起動）
@@ -21,7 +23,7 @@ http://localhost:3000/dashboard.html を開く（サーバー起動時にコン�
 | ダッシュボード統計 | アクティブID数 / 合計残高 / 当日取引件数 表示・自動更新 |
 | QR スキャン | カメラ映像からユーザーIDデコード → 即残高取得表示 |
 | テーマ | ライト / ダーク。初回: LocalStorage > OS 設定。逆テーマを prefetch で先読み |
-| 数値アニメ | 残高値など 500ms easing アニメーション |
+| 数値アニメ | 残高値など 500ms アニメーション |
 | エラーハンドリング | 共通 `handleApiError` で UI+ログ整形 |
 | 共通ユーティリティ | `common.js` に集中 (fetch / format / popup / selectors / intervals) |
 | アクセシビリティ | focus-visible 対応ラジオ / ポップアップ role="alert" / キーボード操作 (Enter, ESC) |
