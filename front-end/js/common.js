@@ -25,9 +25,9 @@
   };
 
   // API 呼び出し（GET JSON）
-  const fetchJSON = async (url, opts) => {
-    const finalUrl = url.includes('?') ? url + '&_=' + Date.now() : url + '?_=' + Date.now();
-    const res = await fetch(finalUrl, Object.assign({ cache: 'no-store' }, opts || {}));
+  const fetchJSON = async (url, opts = {}) => {
+    const finalUrl = `${url}${url.includes('?') ? '&' : '?'}_=${Date.now()}`;
+    const res = await fetch(finalUrl, { cache: 'no-store', ...opts });
     if (!res.ok) throw res; // 呼び出し側で握りつぶすか任せる
     return res.json();
   };
@@ -36,8 +36,7 @@
   const formatCurrency = (value, { sign = true } = {}) => {
     const num = Number(value) || 0;
     const abs = Math.abs(num).toLocaleString();
-    const signStr = num < 0 && sign ? '-' : '';
-    return `${signStr}$${abs}`;
+    return `${num < 0 && sign ? '-' : ''}$${abs}`;
   };
 
   // 日時フォーマット統一
@@ -51,15 +50,22 @@
 
   // ボタン活性化ロジック（残高更新用）
   const updateBalanceButtons = () => {
-    const addBtn = document.querySelector('.add-btn');
-    const subBtn = document.querySelector('.subtract-btn');
+    const [addBtn, subBtn] = ['.add-btn', '.subtract-btn'].map(sel => document.querySelector(sel));
     const amountInput = document.querySelector('#amount');
     const gameRadios = document.querySelectorAll('input[name="game-type"]');
-    const hasUserId = window.currentUserId && window.currentUserId.trim() !== '';
-    const hasAmount = amountInput && amountInput.value && parseFloat(amountInput.value) > 0;
+    
+    const hasUserId = window.currentUserId?.trim();
+    const hasAmount = amountInput?.value && parseFloat(amountInput.value) > 0;
     const hasGame = Array.from(gameRadios).some(r => r.checked);
     const valid = hasUserId && hasAmount && hasGame;
-    [addBtn, subBtn].forEach(btn => { if (!btn) return; btn.disabled = !valid; btn.style.opacity = valid ? '1' : '0.5'; btn.style.cursor = valid ? 'pointer' : 'not-allowed'; });
+    
+    [addBtn, subBtn].forEach(btn => {
+      if (!btn) return;
+      Object.assign(btn, {
+        disabled: !valid,
+        style: `opacity: ${valid ? '1' : '0.5'}; cursor: ${valid ? 'pointer' : 'not-allowed'};`
+      });
+    });
   };
 
   // エラーハンドラ共通
@@ -87,7 +93,7 @@
       ? document.querySelector(containerSelector)
       : containerSelector;
     if (!container) return;
-    const cls = type === 'error' ? 'error-message' : (type === 'success' ? 'success-message' : 'info-message');
+    const cls = { error: 'error-message', success: 'success-message' }[type] ?? 'info-message';
     container.innerHTML = `<div class="${cls}"><p>${message}</p></div>`;
   };
   const clearInlineMessage = containerSelector => {

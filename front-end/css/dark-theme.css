@@ -36,6 +36,18 @@
   --radio-text-active: var(--text-primary);
   --radio-focus-ring: 0 0 0 3px rgba(74, 158, 255, 0.35);
   --text-color: var(--text-primary);
+
+  /* 共通スペーシング */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --border-radius: 8px;
+  --border-radius-sm: 6px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
 }
 
 /* ダークモード固有のスタイル */

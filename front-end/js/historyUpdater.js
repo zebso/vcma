@@ -8,8 +8,8 @@
 
   // ===== 設定 =====
   const API_URL = '/api/history';
-  const POLL_INTERVAL_MS = (window.AppUtils && window.AppUtils.POLL_INTERVALS.history) || 5000; // 5秒ごと
-  const TABLE_BODY_SELECTOR = (window.AppUtils && window.AppUtils.selectors && window.AppUtils.selectors.historyTableBody) || '.history table tbody';
+  const POLL_INTERVAL_MS = window.AppUtils?.POLL_INTERVALS?.history ?? 5000; // 5秒ごと
+  const TABLE_BODY_SELECTOR = window.AppUtils?.selectors?.historyTableBody ?? '.history table tbody';
   const LOADING_CLASS = 'is-loading';
 
   let timerId = null;

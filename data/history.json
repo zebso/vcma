@@ -1,5 +1,23 @@
 [
   {
+    "timestamp": "2025-08-22T11:33:37.661Z",
+    "id": "CC-2025-0NS9EN",
+    "games": "blackjack",
+    "type": "add",
+    "amount": 100,
+    "balance": 500,
+    "dealer": "dealer1"
+  },
+  {
+    "timestamp": "2025-08-22T11:33:05.064Z",
+    "id": "CC-2025-0NS9EN",
+    "games": "blackjack",
+    "type": "add",
+    "amount": 100,
+    "balance": 400,
+    "dealer": "dealer1"
+  },
+  {
     "timestamp": "2025-08-21T00:54:57.554Z",
     "id": "CC-2025-06VE8T",
     "games": "",

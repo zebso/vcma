@@ -14,12 +14,11 @@ const historyFile = path.join(__dirname, '../data', 'history.json');
 const rankingFile = path.join(__dirname, '../data', 'ranking.json');
 
 // ユーティリティ関数（空ファイル/欠損に耐性）
-const loadJSON = (file) => {
+const loadJSON = file => {
   try {
     const txt = fs.readFileSync(file, 'utf-8');
-    if (!txt.trim()) return [];
-    return JSON.parse(txt);
-  } catch (e) {
+    return txt.trim() ? JSON.parse(txt) : [];
+  } catch {
     return [];
   }
 };

@@ -5,14 +5,16 @@ class BalanceUpdater {
 
   // メッセージ表示
   showMessage(message, type = 'info') {
-    if (!this.messageArea) this.messageArea = document.querySelector((window.AppUtils && window.AppUtils.selectors.updateMessageArea) || '#update-message-area');
+    this.messageArea ??= document.querySelector(window.AppUtils?.selectors?.updateMessageArea ?? '#update-message-area');
     if (window.AppUtils && this.messageArea) {
       window.AppUtils.showInlineMessage(this.messageArea, message, type);
     }
   }
 
   // メッセージ非表示
-  hideMessage() { if (this.messageArea && window.AppUtils) window.AppUtils.clearInlineMessage(this.messageArea); }
+  hideMessage() { 
+    if (this.messageArea && window.AppUtils) window.AppUtils.clearInlineMessage(this.messageArea); 
+  }
 
   // 成功メッセージ（ポップアップ表示）
   showSuccessMessage(userId, amount, type) {
@@ -47,7 +49,7 @@ class BalanceUpdater {
 
   // 更新後残高表示（互換ラッパ）
   displayUpdatedBalance(balance) {
-    const sel = (window.AppUtils && window.AppUtils.selectors && window.AppUtils.selectors.updatedBalance) || '#updated-balance';
+    const sel = window.AppUtils?.selectors?.updatedBalance ?? '#updated-balance';
     const balanceElement = document.querySelector(sel);
     // 共通ユーティリティ側デフォルト時間で実行（common.jsでのみ調整可能）
     if (window.AppUtils) {
@@ -159,8 +161,7 @@ const balanceUpdater = new BalanceUpdater();
 
 // DOMContentLoaded後に初期化
 document.addEventListener('DOMContentLoaded', () => {
-  const addButton = document.querySelector('.add-btn');
-  const subtractButton = document.querySelector('.subtract-btn');
+  const [addButton, subtractButton] = ['.add-btn', '.subtract-btn'].map(sel => document.querySelector(sel));
   const amountInput = document.querySelector('#amount');
   const gameRadios = document.querySelectorAll('input[name="game-type"]');
 
@@ -170,22 +171,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // 初期状態でボタンを無効化
   updateButtonStates();
 
-  // 金額入力の変更を監視
-  amountInput && amountInput.addEventListener('input', updateButtonStates);
-
-  // ゲーム選択ラジオボタンの変更を監視
+  // イベント監視を統合
+  amountInput?.addEventListener('input', updateButtonStates);
   gameRadios.forEach(radio => radio.addEventListener('change', updateButtonStates));
 
   // ユーザー検索後にボタン状態を更新（グローバルに呼び出せるようにする）
   window.updateBalanceButtonStates = updateButtonStates;
 
-  // 残高入金処理
-  if (addButton) {
-    addButton.addEventListener('click', () => balanceUpdater.updateBalance('add'));
-  }
-
-  // 残高出金処理
-  if (subtractButton) {
-    subtractButton.addEventListener('click', () => balanceUpdater.updateBalance('subtract'));
-  }
+  // 残高更新処理
+  addButton?.addEventListener('click', () => balanceUpdater.updateBalance('add'));
+  subtractButton?.addEventListener('click', () => balanceUpdater.updateBalance('subtract'));
 });

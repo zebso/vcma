@@ -3,11 +3,11 @@
 
 (() => {
   const RANKING_URL = '/api/ranking';
-  const POLL_INTERVAL = (window.AppUtils && window.AppUtils.POLL_INTERVALS.ranking) || 8000; // ms
+  const POLL_INTERVAL = window.AppUtils?.POLL_INTERVALS?.ranking ?? 8000; // ms
 
   // DOM 参照取得（存在しない場合は動かさない）
   const selectContainers = () => {
-    const sel = (window.AppUtils && window.AppUtils.selectors) || {};
+    const sel = window.AppUtils?.selectors ?? {};
     return {
       top: document.querySelector(sel.rankingTop || '.ranking-top-contents'),
       bottom: document.querySelector(sel.rankingBottom || '.ranking-bottom-contents')
@@ -15,7 +15,7 @@
   };
 
   // 数値 → 通貨表示
-  const formatBalance = v => (window.AppUtils ? window.AppUtils.formatCurrency(v) : ('$' + Number(v).toLocaleString()));
+  const formatBalance = v => window.AppUtils?.formatCurrency(v) ?? `$${Number(v).toLocaleString()}`;
 
   // Top3 用カード生成
   const createTopCard = (entry, rank) => {
@@ -75,7 +75,7 @@
         render(data);
       }
     } catch (e) {
-      if (window.AppUtils && window.AppUtils.handleApiError) window.AppUtils.handleApiError(e, 'ranking'); else console.debug('Ranking fetch error', e);
+      window.AppUtils?.handleApiError?.(e, 'ranking') ?? console.debug('Ranking fetch error', e);
     }
   };
 
