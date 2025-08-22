@@ -41,10 +41,17 @@
       gap: 12px;
 
       .ranking-content {
+        &#ranking-first {
+          order: 1;
+        }
 
-        &:nth-child(1),
-        &:nth-child(2),
-        &:nth-child(3) {
+        &#ranking-second {
+          order: 2;
+        }
+
+        &#ranking-first,
+        &#ranking-second,
+        &#ranking-third {
           flex: 1;
           align-self: stretch;
           margin: 0;

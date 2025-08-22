@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 const PORT = 3000;
+const HOST = '192.168.10.113'
 
 app.use(express.json());
 app.use(express.static('../front-end'));
@@ -160,6 +161,7 @@ app.get('/api/dashboard-stats', (req, res) => {
 });
 
 //サーバー立ち上げ
-app.listen(PORT, () => {
-  console.log(`The Dashboard page is at http://localhost:${PORT}/dashboard.html`);
+app.listen(PORT, HOST, () => {
+  console.log(`Localhost URL is http://localhost:${PORT}/dashboard.html`);
+  console.log(`Local IP URL is http://${HOST}:${PORT}/dashboard.html`);
 });
