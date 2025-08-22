@@ -509,7 +509,7 @@ button svg {
 
   .tab-controller {
     display: flex;
-    border-bottom: 1px solid #efefef;
+    border-bottom: 1px solid var(--border-color);
 
     button {
       flex: 1;

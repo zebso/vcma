@@ -162,7 +162,9 @@ table tbody tr td {
 }
 
 .scan-qr-btn,
-.check-balance-btn {
+.check-balance-btn,
+.add-btn,
+.subtract-btn {
   color: var(--text-primary);
 }
 
