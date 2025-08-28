@@ -14,9 +14,6 @@
     };
   };
 
-  // 数値 → 通貨表示
-  const formatBalance = v => window.AppUtils?.formatCurrency(v) ?? `$${Number(v).toLocaleString()}`;
-
   // Top3 用カード生成
   const createTopCard = (entry, rank) => {
     const div = document.createElement('div');
@@ -24,7 +21,7 @@
     div.id = `ranking-${rank}`;
     div.innerHTML = `
 			<p class="user-id">${entry.id}</p>
-			<h3 class="point">${formatBalance(entry.balance)}</h3>
+			<h3 class="point">$${entry.balance}</h3>
 		`;
     return div;
   };
@@ -40,7 +37,7 @@
 					<div class="user-id">${entry.id}</div>
 				</div>
 			</div>
-			<div class="point">${formatBalance(entry.balance)}</div>
+			<div class="point">$${entry.balance}</div>
 		`;
     return div;
   };

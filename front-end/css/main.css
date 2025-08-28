@@ -834,61 +834,20 @@ button svg {
           }
 
           &:nth-child(4) {
-            >span {
-              display: inline-block;
-              padding: 4px 12px;
-              border-radius: 16px;
-              font-size: 12px;
-              width: 80px;
-              text-align: center;
-              font-weight: bold;
-            }
-
-            .material-symbols-outlined {
-              vertical-align: -20%;
-              margin-right: 4px;
-            }
-
-            .subtract .material-symbols-outlined {
-              vertical-align: -21%;
-            }
-
-            .add {
-              background: var(--success-bg);
-              color: var(--success-text);
-            }
-
-            .generate {
-              background: var(--info-bg);
-              color: var(--info-text);
-            }
-            /* 新規ユーザー生成: info 系と成功色の中間トーンで統一感 */
-            .generate-new {
-              background: var(--info-bg);
-              color: var(--info-text);
-              position: relative;
-            }
-            .generate-new::after { /* subtle accent bar */
-              content: '';
-              position: absolute;
-              inset: 0;
-              border-radius: 16px;
-              background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12));
-              pointer-events: none;
-              mix-blend-mode: overlay;
-            }
-
-            .subtract {
-              background: var(--error-bg);
-              color: var(--error-text);
-            }
-          }
-
-          &:nth-child(4) {
             color: var(--primary-green);
             font-weight: bold;
 
-            &.minus {
+            &.add {
+              color: var(--success-text);
+            }
+            
+            /* 新規ユーザー生成: info 系と成功色の中間トーンで統一感 */
+            &.generate {
+              color: var(--info-text);
+              position: relative;
+            }
+
+            &.subtract {
               color: var(--primary-red);
             }
           }

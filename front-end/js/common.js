@@ -32,13 +32,6 @@
     return res.json();
   };
 
-  // 通貨フォーマット（常に USD $ に統一）
-  const formatCurrency = (value, { sign = true } = {}) => {
-    const num = Number(value) || 0;
-    const abs = Math.abs(num).toLocaleString();
-    return `${num < 0 && sign ? '-' : ''}$${abs}`;
-  };
-
   // 日時フォーマット統一
   const formatDateTime = ts => {
     if (!ts) return '';
@@ -131,7 +124,7 @@
 
   window.AppUtils = {
     animateValue, fetchJSON,
-    formatCurrency, formatDateTime,
+    formatDateTime,
     updateBalanceButtons, handleApiError,
     POLL_INTERVALS, selectors,
     showInlineMessage, clearInlineMessage, showPopup, showBalanceUpdatePopup

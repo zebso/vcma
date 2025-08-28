@@ -42,20 +42,27 @@
 
     try {
       const data = window.AppUtils ? await window.AppUtils.fetchJSON(API_URL) : await (await fetch(API_URL, { cache: 'no-cache' })).json();
+
       if (!Array.isArray(data)) { console.warn('[historyUpdater] 配列でないレスポンス'); return; }
+
       const jsonStr = JSON.stringify(data);
       const h = simpleHash(jsonStr);
+
       if (h === lastHash) return;
+
       lastHash = h;
       data.sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
       let limited = data;
       const limitAttr = tbody.getAttribute('data-limit');
+
       if (limitAttr) {
         const limit = parseInt(limitAttr, 10);
         if (!isNaN(limit) && limit > 0) limited = data.slice(0, limit);
       }
       const frag = document.createDocumentFragment();
+
       for (const item of limited) frag.appendChild(buildRow(item));
+
       tbody.replaceChildren(frag);
     } catch (err) {
       if (window.AppUtils && window.AppUtils.handleApiError) window.AppUtils.handleApiError(err, 'history'); else console.error('[historyUpdater] フェッチエラー', err);
@@ -67,56 +74,22 @@
 
   const buildRow = (item) => {
     const tr = document.createElement('tr');
-    let typeClass = typeToClass(item.type);
-    if (item.type === 'generate') typeClass = 'generate-new';
-    const amountFormatted = window.AppUtils ? window.AppUtils.formatCurrency(item.amount) : formatCurrency(item.amount);
-    const balanceFormatted = window.AppUtils ? window.AppUtils.formatCurrency(item.balance) : formatCurrency(item.balance);
+
+    const sign = item.type === 'add' ? '+' : item.type === 'subtract' ? '-' : item.type === 'generate' ? '*' : '';
+
     tr.innerHTML = `
-			<td>${escapeHtml(formatTimestamp(item.timestamp))}</td>
-			<td>${escapeHtml(item.id || '')}</td>
-			<td>${escapeHtml(item.games || '')}</td>
-			<td><span class="${escapeHtml(typeClass)}">${escapeHtml(typeLabel(item.type))}</span></td>
-			<td class="${item.amount < 0 ? 'minus' : ''}">${amountFormatted}</td>
-			<td>${balanceFormatted}</td>
-			<td>${escapeHtml(item.dealer || '')}</td>
+			<td>${formatTimestamp(item.timestamp)}</td>
+			<td>${item.id || ''}</td>
+			<td>${item.games || ''}</td>
+			<td class="${item.type}">${sign}$${item.amount}</td>
+			<td>$${item.balance}</td>
+			<td>${item.dealer || ''}</td>
 		`.trim();
+    
     return tr;
   };
 
-  const typeToClass = (type) => {
-    switch (type) {
-      case 'add': return 'add';
-      case 'subtract': return 'subtract';
-      case 'generate': return 'generate';
-      default: return 'unknown';
-    }
-  };
-
-  const typeLabel = (type) => {
-    switch (type) {
-      case 'add': return '＋ 入金';
-      case 'subtract': return 'ー 出金';
-      case 'generate': return '＊ 新規';
-      default: return type || '不明';
-    }
-  };
-
   const formatTimestamp = (ts) => (window.AppUtils ? window.AppUtils.formatDateTime(ts) : ts);
-
-  const formatCurrency = (v) => {
-    if (v === undefined || v === null || v === '') return '';
-    const num = Number(v);
-    if (isNaN(num)) return String(v);
-    const sign = num < 0 ? '-' : '';
-    return `${sign}$${Math.abs(num).toLocaleString()}`;
-  };
-
-  const escapeHtml = (str) => String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
 
   const simpleHash = (str) => {
     let h = 0, i = 0, len = str.length;

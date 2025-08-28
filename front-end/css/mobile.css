@@ -14,7 +14,6 @@
 
   main {
     padding: 16px;
-    margin-bottom: 80px;
 
     >div+div {
       margin-top: 16px;

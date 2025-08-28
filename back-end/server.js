@@ -53,7 +53,7 @@ app.get('/api/balance/:id', (req, res) => {
 });
 
 // 共通トランザクション処理
-const createTransactionHandler = (type, sign) => {
+const createTransactionHandler = type => {
   return (req, res) => {
     const { id, amount, games, dealer } = req.body || {};
     const num = Number(amount);
@@ -75,7 +75,7 @@ const createTransactionHandler = (type, sign) => {
       id,
       games,
       type,
-      amount: sign * num, // subtract の場合は負数
+      amount: num, // 常に正数で保存
       balance: user.balance,
       dealer
     });
@@ -89,8 +89,8 @@ const createTransactionHandler = (type, sign) => {
 }
 
 // 入金API / 出金API （挙動・レスポンス互換）
-app.post('/api/add', createTransactionHandler('add', +1));
-app.post('/api/subtract', createTransactionHandler('subtract', -1));
+app.post('/api/add', createTransactionHandler('add'));
+app.post('/api/subtract', createTransactionHandler('subtract'));
 
 // 履歴取得API
 app.get('/api/history', (req, res) => {
