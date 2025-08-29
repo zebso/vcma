@@ -788,10 +788,9 @@ button svg {
   }
 
   table {
-    width: 100%;
+    min-width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
-    min-width: 1200px;
     background: var(--bg-primary);
 
     thead {
@@ -803,16 +802,31 @@ button svg {
     th {
       padding: 0;
       text-align: left;
-      min-width: 140px;
       font-weight: 600;
 
       &:first-child {
         padding-left: 32px;
-        width: 200px;
+        min-width: 200px;
       }
 
       &:nth-child(2) {
-        width: 180px;
+        min-width: 180px;
+      }
+
+      &:nth-child(3) {
+        min-width: 120px;
+      }
+
+      &:nth-child(4) {
+        min-width: 120px;
+      }
+
+      &:nth-child(5) {
+        min-width: 120px;
+      }
+
+      &:nth-child(6) {
+        min-width: 100px;
       }
     }
 
@@ -840,7 +854,7 @@ button svg {
             &.add {
               color: var(--success-text);
             }
-            
+
             /* 新規ユーザー生成: info 系と成功色の中間トーンで統一感 */
             &.generate {
               color: var(--info-text);

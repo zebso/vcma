@@ -231,16 +231,21 @@ class BalanceChecker {
   }
 
   // メッセージ非表示
-  hideMessage() { if (this.messageArea && window.AppUtils) window.AppUtils.clearInlineMessage(this.messageArea); }
+  hideMessage() {
+    if (this.messageArea && window.AppUtils) window.AppUtils.clearInlineMessage(this.messageArea);
+  }
 
   // BalanceUpdaterのボタンを有効化
-  enableBalanceUpdaterButtons() { if (window.AppUtils) window.AppUtils.updateBalanceButtons(); }
-  disableBalanceUpdaterButtons() { if (window.AppUtils) window.AppUtils.updateBalanceButtons(); }
+  enableBalanceUpdaterButtons() {
+    if (window.AppUtils) window.AppUtils.updateBalanceButtons();
+  }
+  disableBalanceUpdaterButtons() {
+    if (window.AppUtils) window.AppUtils.updateBalanceButtons();
+  }
 
   // 成功メッセージ表示
   showSuccessMessage(userId) {
-    const currentBalanceId = (window.AppUtils && window.AppUtils.selectors.currentBalance) || '#current-balance';
-    this.showMessage(`${userId}の残高：$<span id="${currentBalanceId.replace('#', '')}">読み込み中...</span>`, 'success');
+    this.showMessage(`${userId}の残高：$<span id="current-balance">読み込み中...</span>`, 'success');
     // グローバル変数に現在のユーザーIDを保存
     window.currentUserId = userId;
     this.enableBalanceUpdaterButtons();
@@ -248,7 +253,9 @@ class BalanceChecker {
     if (typeof window.updateBalanceButtonStates === 'function') {
       window.updateBalanceButtonStates();
     }
-    document.querySelector('#update-message-area').innerHTML = ''; // メッセージエリアをクリア
+
+    const updateMessageArea = document.querySelector('#update-message-area');
+    if (updateMessageArea) updateMessageArea.innerHTML = ''; // メッセージエリアをクリア
   }
 
   // エラーメッセージ表示
@@ -257,7 +264,7 @@ class BalanceChecker {
     // エラー時はユーザーIDをクリア
     window.currentUserId = '';
     this.disableBalanceUpdaterButtons();
-    // バランス更新ボタンの状態を更新
+    // 残高更新ボタンの状態を更新
     if (typeof window.updateBalanceButtonStates === 'function') {
       window.updateBalanceButtonStates();
     }
@@ -271,7 +278,9 @@ class BalanceChecker {
 
       const response = await fetch(apiUrl);
       let data = null;
+
       try { data = await response.json(); } catch (_) { }
+
       if (response.ok && data) {
         this.displayBalance(data.balance);
       } else if (response.status === 404) {
@@ -279,6 +288,7 @@ class BalanceChecker {
       } else {
         this.showError('残高の取得に失敗しました。');
       }
+
     } catch (error) {
       if (window.AppUtils && window.AppUtils.handleApiError) window.AppUtils.handleApiError(error, 'balance-check'); else console.error('API呼び出しエラー:', error);
       this.showError('通信エラーが発生しました。');
@@ -287,8 +297,7 @@ class BalanceChecker {
 
   // 残高表示
   displayBalance(balance) {
-    const sel = (window.AppUtils && window.AppUtils.selectors.currentBalance) || '#current-balance';
-    const el = document.querySelector(sel);
+    const el = document.querySelector('#current-balance');
     if (!el) return;
     if (window.AppUtils && typeof window.AppUtils.animateValue === 'function') {
       window.AppUtils.animateValue(el, balance);
@@ -315,7 +324,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // ID検索ボタンのイベント
   if (idSearchButton) {
     idSearchButton.addEventListener('click', () => {
-      document.querySelector('#update-message-area').innerHTML = ''; // メッセージエリアをクリア
+      const updateMessageArea = document.querySelector('#update-message-area');
+      if (updateMessageArea) updateMessageArea.innerHTML = ''; // メッセージエリアをクリア
       const userId = idSearchInput.value.trim();
       if (userId) {
         balanceChecker.showSuccessMessage(userId);

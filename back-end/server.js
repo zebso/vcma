@@ -68,7 +68,7 @@ const createTransactionHandler = type => {
     const user = users.find(u => u.id === id);
     if (!user) return res.status(404).json({ error: 'ID not found' });
 
-    user.balance += sign * num; // 加算 or 減算
+    user.balance += type === 'add' ? num : -num; // 加算 or 減算
 
     history.unshift({
       timestamp: new Date().toISOString(),
