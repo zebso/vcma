@@ -31,74 +31,60 @@
     if (fetching) return; // 多重実行防止
     fetching = true;
 
-    if (getComputedStyle(document.querySelector('.table-wrapper')).display === 'block') {
-      const tbody = document.querySelector('.history table tbody');
-      tbody.classList.add(LOADING_CLASS);
-
-      try {
-        const data = window.AppUtils ? await window.AppUtils.fetchJSON(API_URL) : await (await fetch(API_URL, { cache: 'no-cache' })).json();
-
-        if (!Array.isArray(data)) { console.warn('[historyUpdater] 配列でないレスポンス'); return; }
-
-        const jsonStr = JSON.stringify(data);
-        const h = simpleHash(jsonStr);
-
-        if (h === lastHash) return;
-
-        lastHash = h;
-        data.sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
-        let limited = data;
-        const limitAttr = tbody.getAttribute('data-limit');
-
-        if (limitAttr) {
-          const limit = parseInt(limitAttr, 10);
-          if (!isNaN(limit) && limit > 0) limited = data.slice(0, limit);
-        }
-        const frag = document.createDocumentFragment();
-
-        for (const item of limited) frag.appendChild(buildRow(item, false));
-
-        tbody.replaceChildren(frag);
-      } catch (err) {
-        if (window.AppUtils && window.AppUtils.handleApiError) window.AppUtils.handleApiError(err, 'history'); else console.error('[historyUpdater] フェッチエラー', err);
-      } finally {
-        tbody.classList.remove(LOADING_CLASS);
-        fetching = false;
+    // データ取得とハッシュチェック
+    const fetchData = async () => {
+      const data = window.AppUtils ? await window.AppUtils.fetchJSON(API_URL) : await (await fetch(API_URL, { cache: 'no-cache' })).json();
+      
+      if (!Array.isArray(data)) { 
+        console.warn('[historyUpdater] 配列でないレスポンス'); 
+        return null; 
       }
-    } else {
-      const mobileWrapper = document.querySelector('.mobile-wrapper');
-      mobileWrapper.classList.add(LOADING_CLASS);
 
-      try {
-        const data = window.AppUtils ? await window.AppUtils.fetchJSON(API_URL) : await (await fetch(API_URL, { cache: 'no-cache' })).json();
+      const jsonStr = JSON.stringify(data);
+      const h = simpleHash(jsonStr);
 
-        if (!Array.isArray(data)) { console.warn('[historyUpdater] 配列でないレスポンス'); return; }
+      if (h === lastHash) return null;
 
-        const jsonStr = JSON.stringify(data);
-        const h = simpleHash(jsonStr);
+      lastHash = h;
+      return data.sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
+    };
 
-        if (h === lastHash) return;
+    // データ制限とDOM構築
+    const buildLimitedRows = (data, container, isMobile) => {
+      let limited = data;
+      const limitAttr = container.getAttribute('data-limit');
 
-        lastHash = h;
-        data.sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
-        let limited = data;
-        const limitAttr = mobileWrapper.getAttribute('data-limit');
-
-        if (limitAttr) {
-          const limit = parseInt(limitAttr, 10);
-          if (!isNaN(limit) && limit > 0) limited = data.slice(0, limit);
-        }
-        const frag = document.createDocumentFragment();
-
-        for (const item of limited) frag.appendChild(buildRow(item, true));
-
-        mobileWrapper.replaceChildren(frag);
-      } catch (err) {
-        if (window.AppUtils && window.AppUtils.handleApiError) window.AppUtils.handleApiError(err, 'history'); else console.error('[historyUpdater] フェッチエラー', err);
-      } finally {
-        mobileWrapper.classList.remove(LOADING_CLASS);
-        fetching = false;
+      if (limitAttr) {
+        const limit = parseInt(limitAttr, 10);
+        if (!isNaN(limit) && limit > 0) limited = data.slice(0, limit);
       }
+
+      const frag = document.createDocumentFragment();
+      for (const item of limited) frag.appendChild(buildRow(item, isMobile));
+      container.replaceChildren(frag);
+    };
+
+    // エラーハンドリング
+    const handleError = (err) => {
+      window.AppUtils?.handleApiError?.(err, 'history') ?? console.error('[historyUpdater] フェッチエラー', err);
+    };
+
+    // デスクトップ・モバイル判定とDOM更新
+    const isMobile = getComputedStyle(document.querySelector('.table-wrapper')).display !== 'block';
+    const container = isMobile 
+      ? document.querySelector('.mobile-wrapper')
+      : document.querySelector('.history table tbody');
+    
+    container.classList.add(LOADING_CLASS);
+
+    try {
+      const data = await fetchData();
+      if (data) buildLimitedRows(data, container, isMobile);
+    } catch (err) {
+      handleError(err);
+    } finally {
+      container.classList.remove(LOADING_CLASS);
+      fetching = false;
     }
   };
 
