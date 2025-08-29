@@ -75,7 +75,6 @@
     messageArea: '#message-area',
     rankingTop: '.ranking-top-contents',
     rankingBottom: '.ranking-bottom-contents',
-    historyTableBody: '.history table tbody',
     currentBalance: '#current-balance',
     updatedBalance: '#updated-balance'
   });

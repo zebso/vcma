@@ -136,4 +136,15 @@
       }
     }
   }
+
+  .history {
+
+    .table-wrapper {
+      display: none;
+    }
+
+    .mobile-wrapper {
+      display: block;
+    }
+  }
 }

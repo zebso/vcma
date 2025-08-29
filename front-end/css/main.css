@@ -752,20 +752,17 @@ button svg {
         flex-shrink: 0;
       }
 
-      .user-info {
+      .user-id {
         flex: 1;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 2px;
+      }
 
-        .user-id {
-          font-size: 16px;
-          font-weight: 600;
-          color: var(--text-primary);
-          margin-bottom: 2px;
-        }
-
-        .user-name {
-          font-size: 12px;
-          color: var(--text-secondary);
-        }
+      .user-name {
+        font-size: 12px;
+        color: var(--text-secondary);
       }
 
       .point {
@@ -866,6 +863,75 @@ button svg {
             }
           }
         }
+      }
+    }
+  }
+
+  .mobile-wrapper {
+    margin-top: 16px;
+    display: none;
+
+    .history-content {
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      margin-bottom: 8px;
+      background: var(--bg-primary);
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: var(--bg-secondary);
+        border-color: var(--primary-blue);
+        transform: translateX(4px);
+      }
+
+      .history-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .history-amount {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      .user-id {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 2px;
+      }
+
+      .amount {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: right;
+
+        &.add {
+          color: var(--success-text);
+        }
+
+        /* 新規ユーザー生成: info 系と成功色の中間トーンで統一感 */
+        &.generate {
+          color: var(--info-text);
+          position: relative;
+        }
+
+        &.subtract {
+          color: var(--primary-red);
+        }
+      }
+
+      .balance {
+        font-weight: bold;
+      }
+
+      .dealer {
+        color: var(--text-secondary);
       }
     }
   }

@@ -9,7 +9,6 @@
   // ===== 設定 =====
   const API_URL = '/api/history';
   const POLL_INTERVAL_MS = window.AppUtils?.POLL_INTERVALS?.history ?? 5000; // 5秒ごと
-  const TABLE_BODY_SELECTOR = window.AppUtils?.selectors?.historyTableBody ?? '.history table tbody';
   const LOADING_CLASS = 'is-loading';
 
   let timerId = null;
@@ -32,52 +31,102 @@
     if (fetching) return; // 多重実行防止
     fetching = true;
 
-    const tbody = document.querySelector(TABLE_BODY_SELECTOR);
-    if (!tbody) {
-      console.warn('[historyUpdater] tbody が見つかりません:', TABLE_BODY_SELECTOR);
-      fetching = false;
-      return;
-    }
-    tbody.classList.add(LOADING_CLASS);
+    if (getComputedStyle(document.querySelector('.table-wrapper')).display === 'block') {
+      const tbody = document.querySelector('.history table tbody');
+      tbody.classList.add(LOADING_CLASS);
 
-    try {
-      const data = window.AppUtils ? await window.AppUtils.fetchJSON(API_URL) : await (await fetch(API_URL, { cache: 'no-cache' })).json();
+      try {
+        const data = window.AppUtils ? await window.AppUtils.fetchJSON(API_URL) : await (await fetch(API_URL, { cache: 'no-cache' })).json();
 
-      if (!Array.isArray(data)) { console.warn('[historyUpdater] 配列でないレスポンス'); return; }
+        if (!Array.isArray(data)) { console.warn('[historyUpdater] 配列でないレスポンス'); return; }
 
-      const jsonStr = JSON.stringify(data);
-      const h = simpleHash(jsonStr);
+        const jsonStr = JSON.stringify(data);
+        const h = simpleHash(jsonStr);
 
-      if (h === lastHash) return;
+        if (h === lastHash) return;
 
-      lastHash = h;
-      data.sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
-      let limited = data;
-      const limitAttr = tbody.getAttribute('data-limit');
+        lastHash = h;
+        data.sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
+        let limited = data;
+        const limitAttr = tbody.getAttribute('data-limit');
 
-      if (limitAttr) {
-        const limit = parseInt(limitAttr, 10);
-        if (!isNaN(limit) && limit > 0) limited = data.slice(0, limit);
+        if (limitAttr) {
+          const limit = parseInt(limitAttr, 10);
+          if (!isNaN(limit) && limit > 0) limited = data.slice(0, limit);
+        }
+        const frag = document.createDocumentFragment();
+
+        for (const item of limited) frag.appendChild(buildRow(item, false));
+
+        tbody.replaceChildren(frag);
+      } catch (err) {
+        if (window.AppUtils && window.AppUtils.handleApiError) window.AppUtils.handleApiError(err, 'history'); else console.error('[historyUpdater] フェッチエラー', err);
+      } finally {
+        tbody.classList.remove(LOADING_CLASS);
+        fetching = false;
       }
-      const frag = document.createDocumentFragment();
+    } else {
+      const mobileWrapper = document.querySelector('.mobile-wrapper');
+      mobileWrapper.classList.add(LOADING_CLASS);
 
-      for (const item of limited) frag.appendChild(buildRow(item));
+      try {
+        const data = window.AppUtils ? await window.AppUtils.fetchJSON(API_URL) : await (await fetch(API_URL, { cache: 'no-cache' })).json();
 
-      tbody.replaceChildren(frag);
-    } catch (err) {
-      if (window.AppUtils && window.AppUtils.handleApiError) window.AppUtils.handleApiError(err, 'history'); else console.error('[historyUpdater] フェッチエラー', err);
-    } finally {
-      tbody.classList.remove(LOADING_CLASS);
-      fetching = false;
+        if (!Array.isArray(data)) { console.warn('[historyUpdater] 配列でないレスポンス'); return; }
+
+        const jsonStr = JSON.stringify(data);
+        const h = simpleHash(jsonStr);
+
+        if (h === lastHash) return;
+
+        lastHash = h;
+        data.sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
+        let limited = data;
+        const limitAttr = mobileWrapper.getAttribute('data-limit');
+
+        if (limitAttr) {
+          const limit = parseInt(limitAttr, 10);
+          if (!isNaN(limit) && limit > 0) limited = data.slice(0, limit);
+        }
+        const frag = document.createDocumentFragment();
+
+        for (const item of limited) frag.appendChild(buildRow(item, true));
+
+        mobileWrapper.replaceChildren(frag);
+      } catch (err) {
+        if (window.AppUtils && window.AppUtils.handleApiError) window.AppUtils.handleApiError(err, 'history'); else console.error('[historyUpdater] フェッチエラー', err);
+      } finally {
+        mobileWrapper.classList.remove(LOADING_CLASS);
+        fetching = false;
+      }
     }
   };
 
-  const buildRow = (item) => {
-    const tr = document.createElement('tr');
+  const buildRow = (item, isMobile) => {
+    if (isMobile) {
+      const content = document.createElement('div');
+      content.classList.add('history-content');
+      const sign = item.type === 'add' ? '+' : item.type === 'subtract' ? '-' : item.type === 'generate' ? '*' : '';
 
-    const sign = item.type === 'add' ? '+' : item.type === 'subtract' ? '-' : item.type === 'generate' ? '*' : '';
+      content.innerHTML = `
+        <div class="history-info">
+          <p class="timestamp">${formatTimestamp(item.timestamp)}</p>
+          <p class="user-id">${item.id || ''}</p>
+          <p class="games">${item.games || ''}</p>
+        </div>
+        <div class="history-amount">
+          <p class="amount ${item.type}">${sign}$${item.amount}</p>
+          <p class="balance">$${item.balance}</p>
+          <p class="dealer">${item.dealer || ''}</p>
+        </div>
+      `;
+      return content;
+    } else {
+      const tr = document.createElement('tr');
 
-    tr.innerHTML = `
+      const sign = item.type === 'add' ? '+' : item.type === 'subtract' ? '-' : item.type === 'generate' ? '*' : '';
+
+      tr.innerHTML = `
 			<td>${formatTimestamp(item.timestamp)}</td>
 			<td>${item.id || ''}</td>
 			<td>${item.games || ''}</td>
@@ -85,8 +134,10 @@
 			<td>$${item.balance}</td>
 			<td>${item.dealer || ''}</td>
 		`.trim();
-    
-    return tr;
+
+      return tr;
+    }
+
   };
 
   const formatTimestamp = (ts) => (window.AppUtils ? window.AppUtils.formatDateTime(ts) : ts);

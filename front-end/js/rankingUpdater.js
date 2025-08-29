@@ -33,9 +33,7 @@
     div.innerHTML = `
 			<div class="rank-section">
 				<div class="rank-num">${rankNumber}</div>
-				<div class="user-info">
-					<div class="user-id">${entry.id}</div>
-				</div>
+				<div class="user-id">${entry.id}</div>
 			</div>
 			<div class="point">$${entry.balance}</div>
 		`;
