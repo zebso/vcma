@@ -8,6 +8,7 @@ Node.js（npm）が未インストールなら先にインストールする。
 
 ```jsonc
 cd back-end  （またはback-endでターミナルを開く）
+npm install 
 npm run dev  （これでサーバー起動）
 http://localhost:3000/dashboard.html を開く（サーバー起動時にコンソールに表示してる）
 ```
