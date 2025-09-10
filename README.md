@@ -8,7 +8,6 @@ Node.js（npm）が未インストールなら先にインストールする。
 
 ```jsonc
 cd back-end  （またはback-endでターミナルを開く）
-npm init -y
 npm i express nodemon
 package.json内のscriptsに "dev": "nodemon server.js" を追加
 npm run dev  （これでサーバー起動）

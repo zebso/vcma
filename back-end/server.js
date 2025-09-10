@@ -160,6 +160,10 @@ app.get('/api/dashboard-stats', (req, res) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.send('Hello, World!');
+});
+
 //サーバー立ち上げ
 // app.listen(PORT, HOST, () => {
 //   console.log(`Localhost URL is http://localhost:${PORT}/dashboard.html`);
