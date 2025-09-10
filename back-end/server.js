@@ -166,4 +166,6 @@ app.get('/api/dashboard-stats', (req, res) => {
 //   console.log(`Local IP URL is http://${HOST}:${PORT}/dashboard.html`);
 // });
 
-app.listen();
+app.listen(PORT, () => {
+  console.log(`The server started on port ${PORT}`);
+});
