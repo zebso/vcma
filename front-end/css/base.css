@@ -1,0 +1,80 @@
+@charset "utf-8";
+
+@font-face {
+  font-family: Noto Sans JP;
+  font-display: swap;
+  src: url(../fonts/Noto_Sans_JP/NotoSansJP-VariableFont_wght.ttf) format("TrueType");
+}
+
+/* 基本スタイル（テーマに依存しない） */
+
+/*共通スタイル*/
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  font-family: "Noto Sans JP", sans-serif;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+input {
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+input:focus-visible {
+  outline: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.flex-content {
+  display: flex;
+  align-items: center;
+}
+
+h3 svg {
+  vertical-align: -20%;
+  margin-right: 4px;
+}
+
+h1 svg {
+  vertical-align: -15%;
+  margin-right: 8px;
+}
+
+.logos {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  h4 {
+    line-height: 16px;
+    color: var(--text-primary);
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 12px;
+  }
+}

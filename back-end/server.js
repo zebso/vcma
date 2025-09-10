@@ -4,7 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 const PORT = 3000;
-const HOST = '192.168.10.113'
+// const HOST = '192.168.10.113';
+const HOST = '192.168.10.106';
 
 app.use(express.json());
 app.use(express.static('../front-end'));
