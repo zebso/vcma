@@ -86,10 +86,14 @@ http://localhost:3000/dashboard を開く（サーバー起動時にコンソー
     transaction-history.html        # 取引履歴ページ
     css/                            # cssファイル（スタイル）
       balance-updater.css           # 残高更新ページ用スタイル
+      base.css                      # 基本スタイル
+      components.css                # コンポーネントスタイル
       dark-theme.css                # ダークテーマ変数
+      layout.css                    #レイアウト関連スタイル
       light-theme.css               # ライトテーマ変数
-      main.css                      # 共通/基盤スタイル
       mobile.css                    # モバイル向け調整
+      navigation.css                #ナビゲーションスタイル
+      pages.css                     #ページ固有スタイル
       qrScanner.css                 # QR スキャナ UI
       settings.css                  # 設定画面調整
       tablet.css                    # タブレット調整
@@ -105,7 +109,7 @@ http://localhost:3000/dashboard を開く（サーバー起動時にコンソー
       slideIn.js                    # スライドイン UI 効果
       tabControl.js                 # タブ切替制御
       theme.js                      # テーマ初期化/切替
-  userAdder.js                  # ユーザー追加フォーム制御
+      userAdder.js                  # ユーザー追加フォーム制御
     svg/                            # アイコン
       add_circle.svg
       close.svg
@@ -134,7 +138,7 @@ http://localhost:3000/dashboard を開く（サーバー起動時にコンソー
 |------|------|
 | fetchJSON | no-cache 取得 (timestamp 付与) |
 | animateValue | 数値アニメ (duration, easing) |
-| formatCurrency / formatDateTime | 通貨($固定) / 日時表示整形 |
+| formatDateTime | 日時表示整形 |
 | updateBalanceButtons | 入力状態から Add/Subtract 有効化管理 |
 | showPopup / showBalanceUpdatePopup | ポップアップ表示 (多重抑止) |
 | showInlineMessage / clearInlineMessage | インライン通知 |
