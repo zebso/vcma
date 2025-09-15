@@ -1,4 +1,4 @@
-# 実装ガイド
+# 実装ガイド（デプロイ版）
 
 ---
 
@@ -10,7 +10,6 @@ Node.js（npm）が未インストールなら先にインストールする。
 cd back-end  （またはback-endでターミナルを開く）
 npm i express nodemon
 npm run dev  （これでサーバー起動）
-http://localhost:3000/dashboard を開く（サーバー起動時にコンソールに表示してる）
 ```
 
 ---
