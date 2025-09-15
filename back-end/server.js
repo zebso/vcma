@@ -160,6 +160,31 @@ app.get('/api/dashboard-stats', (req, res) => {
   }
 });
 
+//ページの表示
+app.get(['/', '/dashboard'], (req, res) => {
+  res.sendFile(path.join(__dirname, '../front-end', 'dashboard.html'));
+});
+
+app.get('/balance-checker', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front-end', 'balance-checker.html'));
+});
+
+app.get('/balance-updater', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front-end', 'balance-updater.html'));
+});
+
+app.get('/ranking', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front-end', 'ranking.html'));
+});
+
+app.get('/transaction-history', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front-end', 'transaction-history.html'));
+});
+
+app.get('/settings', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front-end', 'settings.html'));
+});
+
 //サーバー立ち上げ
 // app.listen(PORT, HOST, () => {
 //   console.log(`Localhost URL is http://localhost:${PORT}/dashboard.html`);
