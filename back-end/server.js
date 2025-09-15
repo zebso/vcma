@@ -8,7 +8,7 @@ const PORT = 3000;
 const HOST = '192.168.10.106';
 
 app.use(express.json());
-app.use(express.static('../front-end'));
+app.use(express.static(path.join(__dirname, '../front-end')));
 
 const usersFile = path.join(__dirname, '../data', 'users.json');
 const historyFile = path.join(__dirname, '../data', 'history.json');
