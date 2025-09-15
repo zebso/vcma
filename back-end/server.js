@@ -160,6 +160,10 @@ app.get('/api/dashboard-stats', (req, res) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front-end'));
+});
+
 //ページの表示
 app.get(['/', '/dashboard'], (req, res) => {
   res.sendFile(path.join(__dirname, '../front-end', 'dashboard.html'));
