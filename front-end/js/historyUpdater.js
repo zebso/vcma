@@ -137,8 +137,5 @@
   document.addEventListener('DOMContentLoaded', () => {
     start();
   });
-
-  // 外部制御用 (必要なら)
-  window.historyUpdater = { start, stop, refresh: fetchAndRender };
 })();
 
