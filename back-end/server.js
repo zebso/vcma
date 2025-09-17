@@ -185,11 +185,6 @@ app.get('/settings', (req, res) => {
 });
 
 //サーバー立ち上げ
-// app.listen(PORT, HOST, () => {
-//   console.log(`Localhost URL is http://localhost:${PORT}/dashboard.html`);
-//   console.log(`Local IP URL is http://${HOST}:${PORT}/dashboard.html`);
-// });
-
 app.listen(process.env.PORT || PORT, () => {
   console.log(`The server started on port ${PORT}`);
 });
