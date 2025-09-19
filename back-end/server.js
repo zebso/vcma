@@ -4,11 +4,15 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 const PORT = 3000;
+const dealerRouter = require('./routes/dealer');
 // const HOST = '192.168.10.113';
 const HOST = '192.168.10.106';
 
 app.use(express.json());
 app.use(express.static('../front-end'));
+
+// ルーティング
+app.use('/dealer', dealerRouter);
 
 const usersFile = path.join(__dirname, '../data', 'users.json');
 const historyFile = path.join(__dirname, '../data', 'history.json');
@@ -160,33 +164,18 @@ app.get('/api/dashboard-stats', (req, res) => {
   }
 });
 
-//ページの表示
-app.get(['/', '/dashboard'], (req, res) => {
-  res.sendFile(path.join(__dirname, '../front-end', 'dashboard.html'));
+// ページの表示
+// ユーザーページへ推移
+app.get('/', (req, res) => {
+  res.redirect('/user');
 });
 
-app.get('/balance-checker', (req, res) => {
-  res.sendFile(path.join(__dirname, '../front-end', 'balance-checker.html'));
+app.get('/user', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front-end/user-pages', 'user.html'));
 });
 
-app.get('/balance-updater', (req, res) => {
-  res.sendFile(path.join(__dirname, '../front-end', 'balance-updater.html'));
-});
-
-app.get('/ranking', (req, res) => {
-  res.sendFile(path.join(__dirname, '../front-end', 'ranking.html'));
-});
-
-app.get('/transaction-history', (req, res) => {
-  res.sendFile(path.join(__dirname, '../front-end', 'transaction-history.html'));
-});
-
-app.get('/settings', (req, res) => {
-  res.sendFile(path.join(__dirname, '../front-end', 'settings.html'));
-});
-
-サーバー立ち上げ
+// サーバー立ち上げ
 app.listen(PORT, HOST, () => {
-  console.log(`Localhost URL is http://localhost:${PORT}/dashboard.html`);
-  console.log(`Local IP URL is http://${HOST}:${PORT}/dashboard.html`);
+  console.log(`Localhost URL is http://localhost:${PORT}/dealer/dashboard`);
+  console.log(`Local IP URL is http://${HOST}:${PORT}/dealer/dashboard`);
 });

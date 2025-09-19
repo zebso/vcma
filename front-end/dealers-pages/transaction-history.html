@@ -4,19 +4,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/navigation.css">
-  <link rel="stylesheet" href="css/pages.css">
-  <link rel="stylesheet" href="css/qrScanner.css">
-  <link rel="stylesheet" href="css/tablet.css">
-  <link rel="stylesheet" href="css/mobile.css">
-  <title>文化祭 カジノ通貨管理アプリ - 残高確認</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/navigation.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <link rel="stylesheet" href="../css/tablet.css">
+  <link rel="stylesheet" href="../css/mobile.css">
+  <link rel="stylesheet" href="../css/transaction-history.css">
+  <title>文化祭 カジノ通貨管理アプリ</title>
 
   <script>
     window.addEventListener('DOMContentLoaded', function () {
-      fetch('svg/svg.html') //ロード元URL
+      fetch('../svg/svg.html') //ロード元URL
         .then(data => data.text())
         .then(html => document.getElementById('svg').innerHTML = html)
         .then();
@@ -35,33 +35,37 @@
         <use href="#dehaze" />
       </svg>
 
-      <h1><svg width="36" height="36" style="fill: #24a37c;">
-          <use href="#request-quote" />
-        </svg>残高確認</h1>
+      <h1><svg width="36" height="36" style="fill: #d97706;">
+          <use href="#history" />
+        </svg>取引履歴</h1>
     </header>
 
     <main>
-      <div class="form">
-        <div class="tab">
-          <div class="tab-controller">
-            <button class="btn current-tab">QRコード検索</button>
-            <button class="btn">ID入力検索</button>
-          </div>
-          <div class="tab-contents">
-            <div class="tab-content">
-              <button class="btn scan-qr-btn"><svg width="24" height="24" style="fill: #fff;">
-                  <use href="#qr-code-scanner" />
-                </svg>カメラを起動</button>
-            </div>
-            <div class="tab-content hidden">
-              <input type="search" id="id-search" placeholder="Enter ID to search">
-              <button class="btn check-balance-btn">ID 検索</button>
-            </div>
 
-            <!-- メッセージエリア（JavaScript で制御） -->
-            <div id="message-area"></div>
-          </div>
+      <!--履歴-->
+      <div class="history content">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>日時</th>
+                <th>ID</th>
+                <th>ゲーム</th>
+                <th>額</th>
+                <th>残高</th>
+                <th>ディーラー</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--履歴の行はJavaScriptで動的に追加-->
+              <tr>
+                <td colspan="7" class="loading">読み込み中...</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        
+        <div class="mobile-wrapper"></div>
       </div>
     </main>
   </div>
@@ -85,13 +89,13 @@
       <li><a href="dashboard"><svg width="24" height="24">
             <use href="#finance" />
           </svg>一覧</a></li>
-      <li class="current-page"><a href="balance-checker"><svg width="24" height="24">
+      <li><a href="balance-checker"><svg width="24" height="24">
             <use href="#request-quote" />
           </svg>残高確認</a></li>
       <li><a href="balance-updater"><svg width="24" height="24">
             <use href="#wallet" />
           </svg>残高更新</a></li>
-      <li><a href="transaction-history"><svg width="24" height="24">
+      <li class="current-page"><a href="transaction-history"><svg width="24" height="24">
             <use href="#history" />
           </svg>取引履歴</a></li>
       <li><a href="ranking"><svg width="24" height="24">
@@ -105,12 +109,10 @@
 
   <div id="close-nav"></div>
 
-  <script src="js/common.js"></script>
-  <script src="js/slideIn.js"></script>
-  <script src="js/tabControl.js"></script>
-  <script src="js/jsQR.js"></script>
-  <script src="js/balanceChecker.js"></script>
-  <script src="js/theme.js"></script>
+  <script src="../js/common.js"></script>
+  <script src="../js/slideIn.js"></script>
+  <script src="../js/historyUpdater.js"></script>
+  <script src="../js/theme.js"></script>
 </body>
 
 </html>
