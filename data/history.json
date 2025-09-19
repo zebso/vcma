@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2025-09-19T01:48:11.668Z",
+    "id": "CC-2025-0WP0Z7",
+    "games": "",
+    "type": "generate",
+    "amount": 100,
+    "balance": 100,
+    "dealer": ""
+  },
+  {
     "timestamp": "2025-09-15T09:01:32.302Z",
     "id": "CC-2025-0NS9EN",
     "games": "blackjack",

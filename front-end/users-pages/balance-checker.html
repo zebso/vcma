@@ -4,19 +4,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/navigation.css">
-  <link rel="stylesheet" href="css/pages.css">
-  <link rel="stylesheet" href="css/qrScanner.css">
-  <link rel="stylesheet" href="css/tablet.css">
-  <link rel="stylesheet" href="css/mobile.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/navigation.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <link rel="stylesheet" href="../css/qrScanner.css">
+  <link rel="stylesheet" href="../css/tablet.css">
+  <link rel="stylesheet" href="../css/mobile.css">
   <title>文化祭 カジノ通貨管理アプリ - 残高確認</title>
 
   <script>
     window.addEventListener('DOMContentLoaded', function () {
-      fetch('svg/svg.html') //ロード元URL
+      fetch('../svg/svg.html') //ロード元URL
         .then(data => data.text())
         .then(html => document.getElementById('svg').innerHTML = html)
         .then();
@@ -77,23 +77,14 @@
         </svg>
         <div class="contents-right">
           <h4>通貨システム</h4>
-          <p>管理アプリ</p>
+          <p>ユーザーページ</p>
         </div>
       </div>
     </div>
     <ul>
-      <li><a href="dashboard"><svg width="24" height="24">
-            <use href="#finance" />
-          </svg>一覧</a></li>
       <li class="current-page"><a href="balance-checker"><svg width="24" height="24">
             <use href="#request-quote" />
           </svg>残高確認</a></li>
-      <li><a href="balance-updater"><svg width="24" height="24">
-            <use href="#wallet" />
-          </svg>残高更新</a></li>
-      <li><a href="transaction-history"><svg width="24" height="24">
-            <use href="#history" />
-          </svg>取引履歴</a></li>
       <li><a href="ranking"><svg width="24" height="24">
             <use href="#crown" />
           </svg>ランキング</a></li>
@@ -105,12 +96,12 @@
 
   <div id="close-nav"></div>
 
-  <script src="js/common.js"></script>
-  <script src="js/slideIn.js"></script>
-  <script src="js/tabControl.js"></script>
-  <script src="js/jsQR.js"></script>
-  <script src="js/balanceChecker.js"></script>
-  <script src="js/theme.js"></script>
+  <script src="../js/common.js"></script>
+  <script src="../js/slideIn.js"></script>
+  <script src="../js/tabControl.js"></script>
+  <script src="../js/jsQR.js"></script>
+  <script src="../js/balanceChecker.js"></script>
+  <script src="../js/theme.js"></script>
 </body>
 
 </html>

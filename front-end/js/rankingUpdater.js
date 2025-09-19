@@ -44,7 +44,7 @@
   const render = ranking => {
     const { top, bottom } = selectContainers();
     if (!top || !bottom) return;
-    const isRankingPage = /ranking\.html$/i.test(location.pathname);
+    const isRankingPage = /ranking$/i.test(location.pathname);
     const maxTotal = isRankingPage ? 18 : 6; // 5 + top3(重複を許容) 仕様調整可
     const limited = ranking.slice(0, maxTotal);
 
