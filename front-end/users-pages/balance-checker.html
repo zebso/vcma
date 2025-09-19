@@ -7,11 +7,11 @@
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/navigation.css">
   <link rel="stylesheet" href="../css/pages.css">
   <link rel="stylesheet" href="../css/qrScanner.css">
   <link rel="stylesheet" href="../css/tablet.css">
   <link rel="stylesheet" href="../css/mobile.css">
-  <link rel="stylesheet" href="../css/user.css">
   <title>文化祭 カジノ通貨管理アプリ - 残高確認</title>
 
   <script>
@@ -30,6 +30,11 @@
 
   <div class="main-wrapper">
     <header>
+      <!--ハンバーガーメニュー-->
+      <svg class="hamburger-menu" width="36" height="36">
+        <use href="#dehaze" />
+      </svg>
+
       <h1><svg width="36" height="36" style="fill: #24a37c;">
           <use href="#request-quote" />
         </svg>残高確認</h1>
@@ -61,7 +66,38 @@
     </main>
   </div>
 
+  <nav class="side-nav">
+    <div class="flex-content">
+      <svg width="48" height="48">
+        <use href="#close" />
+      </svg>
+      <div class="logos">
+        <svg width="24" height="24" style="fill: #087de2;">
+          <use href="#currency-exchange" />
+        </svg>
+        <div class="contents-right">
+          <h4>通貨システム</h4>
+          <p>ユーザーページ</p>
+        </div>
+      </div>
+    </div>
+    <ul>
+      <li class="current-page"><a href="balance-checker"><svg width="24" height="24">
+            <use href="#request-quote" />
+          </svg>残高確認</a></li>
+      <li><a href="ranking"><svg width="24" height="24">
+            <use href="#crown" />
+          </svg>ランキング</a></li>
+      <li><a href="settings"><svg width="24" height="24">
+            <use href="#settings" />
+          </svg>設定</a></li>
+    </ul>
+  </nav>
+
+  <div id="close-nav"></div>
+
   <script src="../js/common.js"></script>
+  <script src="../js/slideIn.js"></script>
   <script src="../js/tabControl.js"></script>
   <script src="../js/jsQR.js"></script>
   <script src="../js/balanceChecker.js"></script>
