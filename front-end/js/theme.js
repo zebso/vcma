@@ -29,7 +29,7 @@
       // 他CSS後ろに配置
       document.head.appendChild(linkEl);
     }
-    const href = `css/${theme}-theme.css`;
+    const href = `../css/${theme}-theme.css`;
     if (linkEl.getAttribute('href') !== href) {
       linkEl.setAttribute('href', href);
     }
@@ -69,7 +69,7 @@
     const other = t === 'dark' ? 'light' : 'dark';
     const prefetch = document.createElement('link');
     prefetch.rel = 'prefetch';
-    prefetch.href = `css/${other}-theme.css`;
+    prefetch.href = `../css/${other}-theme.css`;
     prefetch.as = 'style';
     prefetch.crossOrigin = 'anonymous';
     prefetch.dataset.prefetch = 'theme';
