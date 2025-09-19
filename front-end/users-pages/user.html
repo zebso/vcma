@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <link rel="stylesheet" href="../css/qrScanner.css">
+  <link rel="stylesheet" href="../css/tablet.css">
+  <link rel="stylesheet" href="../css/mobile.css">
+  <link rel="stylesheet" href="../css/user.css">
+  <title>文化祭 カジノ通貨管理アプリ - 残高確認</title>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      fetch('../svg/svg.html') //ロード元URL
+        .then(data => data.text())
+        .then(html => document.getElementById('svg').innerHTML = html)
+        .then();
+    });
+  </script>
+</head>
+
+<body>
+  <!--SVGアイコンを読み込むための空のdiv-->
+  <div id="svg" style="display: none;"></div>
+
+  <div class="main-wrapper">
+    <header>
+      <!--ハンバーガーメニュー-->
+      <svg class="hamburger-menu" width="36" height="36">
+        <use href="#dehaze" />
+      </svg>
+
+      <h1><svg width="36" height="36" style="fill: #24a37c;">
+          <use href="#request-quote" />
+        </svg>残高確認</h1>
+    </header>
+
+    <main>
+      <div class="form">
+        <div class="tab">
+          <div class="tab-controller">
+            <button class="btn current-tab">QRコード検索</button>
+            <button class="btn">ID入力検索</button>
+          </div>
+          <div class="tab-contents">
+            <div class="tab-content">
+              <button class="btn scan-qr-btn"><svg width="24" height="24" style="fill: #fff;">
+                  <use href="#qr-code-scanner" />
+                </svg>カメラを起動</button>
+            </div>
+            <div class="tab-content hidden">
+              <input type="search" id="id-search" placeholder="Enter ID to search">
+              <button class="btn check-balance-btn">ID 検索</button>
+            </div>
+
+            <!-- メッセージエリア（JavaScript で制御） -->
+            <div id="message-area"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/common.js"></script>
+  <script src="../js/tabControl.js"></script>
+  <script src="../js/jsQR.js"></script>
+  <script src="../js/balanceChecker.js"></script>
+  <script src="../js/theme.js"></script>
+</body>
+
+</html>

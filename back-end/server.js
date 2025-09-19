@@ -171,7 +171,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/user', (req, res) => {
-  res.sendFile(path.join(__dirname, '../front-end/user-pages', 'user.html'));
+  res.sendFile(path.join(__dirname, '../front-end/users-pages', 'user.html'));
 });
 
 // サーバー立ち上げ
