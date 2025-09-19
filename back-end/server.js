@@ -13,6 +13,7 @@ app.use(express.static('../front-end'));
 
 // ルーティング
 app.use('/dealer', dealerRouter);
+app.use('/user', require('./routes/user'));
 
 const usersFile = path.join(__dirname, '../data', 'users.json');
 const historyFile = path.join(__dirname, '../data', 'history.json');
@@ -168,10 +169,6 @@ app.get('/api/dashboard-stats', (req, res) => {
 // ユーザーページへ推移
 app.get('/', (req, res) => {
   res.redirect('/user');
-});
-
-app.get('/user', (req, res) => {
-  res.sendFile(path.join(__dirname, '../front-end/users-pages', 'user.html'));
 });
 
 // サーバー立ち上げ
